@@ -1,11 +1,14 @@
-package ru.inobitec.task1.controllers;
+package ru.inobitec.taskone.controllers;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.inobitec.task1.model.Order;
-import ru.inobitec.task1.service.OrderService;
+import ru.inobitec.taskone.dto.OrderDTO;
+import ru.inobitec.taskone.model.Orders;
+import ru.inobitec.taskone.service.OrderService;
+
+import javax.websocket.server.PathParam;
 
 @RestController
 @RequestMapping("/")
@@ -19,10 +22,8 @@ public class OrderController {
         return new ResponseEntity(orderService.getAllOrderItems(), HttpStatus.OK);
     }
 
-    @PostMapping("/addOrder")
-    public ResponseEntity<String> addOrder(@ModelAttribute Order newOrder){
-        orderService.addOrder(newOrder);
-        return ResponseEntity.status(HttpStatus.OK).body("Order added");
+    @GetMapping("/order/{id}")
+    public ResponseEntity<OrderDTO> getOrderById(@PathVariable("id") String id){
+        return new ResponseEntity(orderService.getOrderById(id), HttpStatus.OK);
     }
-
 }

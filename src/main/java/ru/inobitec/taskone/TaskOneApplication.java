@@ -1,13 +1,13 @@
-package ru.inobitec.task1;
+package ru.inobitec.taskone;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class Task1Application {
+public class TaskOneApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(Task1Application.class, args);
+        SpringApplication.run(TaskOneApplication.class, args);
     }
 
 }
