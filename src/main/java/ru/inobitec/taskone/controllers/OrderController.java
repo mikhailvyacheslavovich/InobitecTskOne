@@ -26,4 +26,10 @@ public class OrderController {
     public ResponseEntity<OrderDTO> getOrderById(@PathVariable("id") String id){
         return new ResponseEntity(orderService.getOrderById(id), HttpStatus.OK);
     }
+    @DeleteMapping("/deleteOrder/{id}")
+    public ResponseEntity<String> deleteOrderById(@PathVariable("id") String id){
+        orderService.deleteOrderById(id);
+        return ResponseEntity.status(HttpStatus.OK).body("order deleted");
+    }
+
 }

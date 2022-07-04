@@ -16,7 +16,7 @@ import java.util.List;
 public class OrderService {
 
     @Autowired
-    private MainMapper mainMapper;
+    private final MainMapper mainMapper;
 
     public List<OrderItem> getAllOrderItems(){
         return mainMapper.getAllOrderItems();
@@ -26,5 +26,11 @@ public class OrderService {
         Orders order = mainMapper.selectById(Integer.parseInt(id));
         List <OrderItem> items = mainMapper.getOrderItemsById(Integer.parseInt(id));
         return OrderDTO.buildOrderDto(order, items);
+    }
+
+    public void deleteOrderById(String id){
+        int ident = Integer.parseInt(id);
+        mainMapper.deleteOrderItemsById(ident);
+        mainMapper.deleteOrderById(ident);
     }
 }
