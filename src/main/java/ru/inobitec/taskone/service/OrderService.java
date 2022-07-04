@@ -2,7 +2,10 @@ package ru.inobitec.taskone.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import ru.inobitec.taskone.dto.OrderDTO;
 import ru.inobitec.taskone.model.OrderItem;
 import ru.inobitec.taskone.model.Orders;
@@ -20,6 +23,25 @@ public class OrderService {
 
     public List<OrderItem> getAllOrderItems(){
         return mainMapper.getAllOrderItems();
+    }
+
+    public void addOrder(OrderDTO newOrder){
+        Orders orders = newOrder.OrderFromDto();
+        mainMapper.addOrder(orders);
+        Long id = orders.getId();
+        for (OrderItem item : newOrder.getOrderItems()){
+            item.setOrderId(id);
+            mainMapper.addOrderItem(item);
+        }
+    }
+
+    public void updateOrder(OrderDTO orderUpdate){
+        Orders order = orderUpdate.OrderFromDto();
+        for (OrderItem item : orderUpdate.getOrderItems()){
+            item.setOrderId(order.getId());
+            mainMapper.updateOrderItem(item);
+        }
+        mainMapper.updateOrder(order);
     }
 
     public OrderDTO getOrderById(String id){

@@ -19,6 +19,16 @@ public class OrderDTO {
     private String customerComment;
     List<OrderItem> orderItems;
 
+    public Orders OrderFromDto(){
+        Orders order = new Orders();
+        order.setId(id);
+        order.setOrderStatusId(orderStatusId);
+        order.setCustomerComment(customerComment);
+        order.setCustomerName(customerName);
+        order.setCustomerPhone(customerPhone);
+        return order;
+    }
+
     public static OrderDTO buildOrderDto(Orders order, List<OrderItem> orderItems){
         OrderDTO orderDto = new OrderDTO();
         orderDto.setId(order.getId());
