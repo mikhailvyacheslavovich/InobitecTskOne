@@ -6,7 +6,7 @@ import lombok.*;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Orders {
+public class Order {
     Long id;
     private Integer orderStatusId;
     private String customerName;

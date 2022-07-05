@@ -15,29 +15,24 @@ public class OrderController {
 
     private final OrderService orderService;
 
-    @GetMapping("/orderItems")
-    public ResponseEntity<String> getAllOrderItems()  {
-        return new ResponseEntity(orderService.getAllOrderItems(), HttpStatus.OK);
-    }
-
     @PostMapping("/order")
-    public ResponseEntity<String> addOrder(@ModelAttribute OrderDTO newOrder){
+    public ResponseEntity<String> addOrder(@ModelAttribute OrderDTO newOrder) {
         orderService.addOrder(newOrder);
-        return ResponseEntity.status(HttpStatus.OK).body("Order added");
+        return ResponseEntity.status(HttpStatus.OK).body("A new order has been successfully created");
     }
 
     @PutMapping("/updateOrder")
-    public ResponseEntity<String> updateOrder(@ModelAttribute OrderDTO orderUpdate){
-        orderService.updateOrder(orderUpdate);
-        return ResponseEntity.status(HttpStatus.OK).body("Order updated");
+    public ResponseEntity<String> updateOrder(@ModelAttribute OrderDTO orderUpdate) {
+        return ResponseEntity.status(HttpStatus.OK).body("Order has been updated successfully");
     }
 
     @GetMapping("/order/{id}")
-    public ResponseEntity<OrderDTO> getOrderById(@PathVariable("id") String id){
+    public ResponseEntity<OrderDTO> getOrderById(@PathVariable("id") String id) {
         return new ResponseEntity(orderService.getOrderById(id), HttpStatus.OK);
     }
+
     @DeleteMapping("/deleteOrder/{id}")
-    public ResponseEntity<String> deleteOrderById(@PathVariable("id") String id){
+    public ResponseEntity<String> deleteOrderById(@PathVariable("id") String id) {
         orderService.deleteOrderById(id);
         return ResponseEntity.status(HttpStatus.OK).body("order deleted");
     }

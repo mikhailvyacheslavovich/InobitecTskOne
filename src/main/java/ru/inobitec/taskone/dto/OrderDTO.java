@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import ru.inobitec.taskone.model.OrderItem;
-import ru.inobitec.taskone.model.Orders;
+import ru.inobitec.taskone.model.Order;
 
 import java.util.List;
 
@@ -19,8 +19,8 @@ public class OrderDTO {
     private String customerComment;
     List<OrderItem> orderItems;
 
-    public Orders OrderFromDto(){
-        Orders order = new Orders();
+    public Order OrderFromDto() {
+        Order order = new Order();
         order.setId(id);
         order.setOrderStatusId(orderStatusId);
         order.setCustomerComment(customerComment);
@@ -29,7 +29,7 @@ public class OrderDTO {
         return order;
     }
 
-    public static OrderDTO buildOrderDto(Orders order, List<OrderItem> orderItems){
+    public static OrderDTO buildOrderDto(Order order, List<OrderItem> orderItems) {
         OrderDTO orderDto = new OrderDTO();
         orderDto.setId(order.getId());
         orderDto.setOrderStatusId(order.getOrderStatusId());

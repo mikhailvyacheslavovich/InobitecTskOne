@@ -2,57 +2,50 @@ package ru.inobitec.taskone.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
 import ru.inobitec.taskone.dto.OrderDTO;
 import ru.inobitec.taskone.model.OrderItem;
-import ru.inobitec.taskone.model.Orders;
-import ru.inobitec.taskone.repository.MainMapper;
+import ru.inobitec.taskone.model.Order;
+import ru.inobitec.taskone.repository.OrderMapper;
 
-import java.sql.SQLOutput;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class OrderService {
 
-    @Autowired
-    private final MainMapper mainMapper;
+    private final OrderMapper orderMapper;
 
-    public List<OrderItem> getAllOrderItems(){
-        return mainMapper.getAllOrderItems();
-    }
 
-    public void addOrder(OrderDTO newOrder){
-        Orders orders = newOrder.OrderFromDto();
-        mainMapper.addOrder(orders);
-        Long id = orders.getId();
-        for (OrderItem item : newOrder.getOrderItems()){
+    public void addOrder(OrderDTO newOrder) {
+        Order order = newOrder.OrderFromDto();
+        orderMapper.addOrder(order);
+        Long id = order.getId();
+        newOrder.getOrderItems().forEach((item) -> {
             item.setOrderId(id);
-            mainMapper.addOrderItem(item);
-        }
+            orderMapper.addOrderItem(item);
+        });
     }
 
-    public void updateOrder(OrderDTO orderUpdate){
-        Orders order = orderUpdate.OrderFromDto();
-        for (OrderItem item : orderUpdate.getOrderItems()){
-            item.setOrderId(order.getId());
-            mainMapper.updateOrderItem(item);
-        }
-        mainMapper.updateOrder(order);
+    public void updateOrder(OrderDTO orderUpdate) {
+        Order order = orderUpdate.OrderFromDto();
+        Long id = order.getId();
+        orderUpdate.getOrderItems().forEach((item) -> {
+            item.setOrderId(id);
+            orderMapper.updateOrderItem(item);
+        });
+        orderMapper.updateOrder(order);
     }
 
-    public OrderDTO getOrderById(String id){
-        Orders order = mainMapper.selectById(Integer.parseInt(id));
-        List <OrderItem> items = mainMapper.getOrderItemsById(Integer.parseInt(id));
+    public OrderDTO getOrderById(String id) {
+        Order order = orderMapper.selectById(Integer.parseInt(id));
+        List<OrderItem> items = orderMapper.getOrderItemsById(Integer.parseInt(id));
         return OrderDTO.buildOrderDto(order, items);
     }
 
-    public void deleteOrderById(String id){
+    public void deleteOrderById(String id) {
         int ident = Integer.parseInt(id);
-        mainMapper.deleteOrderItemsById(ident);
-        mainMapper.deleteOrderById(ident);
+        orderMapper.deleteOrderItemsById(ident);
+        orderMapper.deleteOrderById(ident);
     }
 }
