@@ -27,14 +27,14 @@ public interface OrderMapper {
 
     @Select("SELECT id, order_status_id AS orderStatusId, customer_name AS customerName, customer_phone AS customerPhone," +
             " customer_comment AS customerComment FROM \"order\" WHERE id=#{id}")
-    Order selectById(int id);
+    Order selectById(Long id);
 
     @Select("SELECT id, order_id AS orderId, item_name AS itemName FROM order_item WHERE order_id = #{id}")
-    List<OrderItem> getOrderItemsById(int id);
+    List<OrderItem> getOrderItemsById(Long id);
 
     @Delete("DELETE FROM \"order\" WHERE id = #{id}")
-    void deleteOrderById(int id);
+    void deleteOrderById(Long id);
 
     @Delete("DELETE FROM order_item WHERE order_id = #{id}")
-    void deleteOrderItemsById(int id);
+    void deleteOrderItemsById(Long id);
 }

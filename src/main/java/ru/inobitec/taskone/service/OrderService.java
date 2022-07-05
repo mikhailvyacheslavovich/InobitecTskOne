@@ -37,15 +37,14 @@ public class OrderService {
         orderMapper.updateOrder(order);
     }
 
-    public OrderDTO getOrderById(String id) {
-        Order order = orderMapper.selectById(Integer.parseInt(id));
-        List<OrderItem> items = orderMapper.getOrderItemsById(Integer.parseInt(id));
+    public OrderDTO getOrderById(Long id) {
+        Order order = orderMapper.selectById(id);
+        List<OrderItem> items = orderMapper.getOrderItemsById(id);
         return OrderDTO.buildOrderDto(order, items);
     }
 
-    public void deleteOrderById(String id) {
-        int ident = Integer.parseInt(id);
-        orderMapper.deleteOrderItemsById(ident);
-        orderMapper.deleteOrderById(ident);
+    public void deleteOrderById(Long id) {
+        orderMapper.deleteOrderItemsById(id);
+        orderMapper.deleteOrderById(id);
     }
 }

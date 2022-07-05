@@ -23,17 +23,18 @@ public class OrderController {
 
     @PutMapping("/updateOrder")
     public ResponseEntity<String> updateOrder(@ModelAttribute OrderDTO orderUpdate) {
+        orderService.updateOrder(orderUpdate);
         return ResponseEntity.status(HttpStatus.OK).body("Order has been updated successfully");
     }
 
     @GetMapping("/order/{id}")
     public ResponseEntity<OrderDTO> getOrderById(@PathVariable("id") String id) {
-        return new ResponseEntity(orderService.getOrderById(id), HttpStatus.OK);
+        return new ResponseEntity(orderService.getOrderById(Long.parseLong(id)), HttpStatus.OK);
     }
 
     @DeleteMapping("/deleteOrder/{id}")
     public ResponseEntity<String> deleteOrderById(@PathVariable("id") String id) {
-        orderService.deleteOrderById(id);
+        orderService.deleteOrderById(Long.parseLong(id));
         return ResponseEntity.status(HttpStatus.OK).body("order deleted");
     }
 
