@@ -1,6 +1,7 @@
 package ru.inobitec.taskone.dto;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import ru.inobitec.taskone.model.OrderItem;
