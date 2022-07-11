@@ -5,7 +5,7 @@ import ru.inobitec.taskone.dto.OrderDTO;
 public interface OrderService {
     public void addOrder(OrderDTO newOrder);
 
-    public void updateOrder(OrderDTO orderUpdate);
+    public void updateOrder(OrderDTO orderUpdate, Long idOfOrder);
 
     public OrderDTO getOrderById(Long id);
 

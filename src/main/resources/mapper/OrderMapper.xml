@@ -48,6 +48,21 @@
         </foreach>
     </insert>
 
+    <update id="updateOrder" parameterType="ru.inobitec.taskone.dto.OrderDTO">
+        update "order"
+        set order_status_id  = #{order.orderStatusId},
+            customer_name    = #{order.customerName},
+            customer_phone   = #{order.customerPhone},
+            customer_comment = #{order.customerComment}
+        where id = #{idOfOrder};
+    </update>
+
+    <update id="updateOrderItems" parameterType="ru.inobitec.taskone.model.OrderItem">
+        <foreach collection="items" item="item" separator=";">
+            UPDATE order_item SET item_name=#{item.itemName} WHERE order_id=#{idOfOrder} AND id = #{item.id};
+        </foreach>
+    </update>
+
     <delete id="deleteOrderById">
         DELETE
         FROM order_item
