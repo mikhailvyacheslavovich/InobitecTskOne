@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ru.inobitec.taskone.repository.OrderMapper">
+    <resultMap id="Order" type="ru.inobitec.taskone.dto.OrderDTO">
+        <result property="id" column="id"/>
+        <result property="orderStatusId" column="ORDER_STATUS_ID"/>
+        <result property="customerName" column="CUSTOMER_NAME"/>
+        <result property="customerPhone" column="customer_phone"/>
+        <result property="customerComment" column="customer_comment"/>
+        <collection property="orderItems" javaType="ArrayList" ofType="ru.inobitec.taskone.model.OrderItem">
+            <result property="id" column="id"/>
+            <result property="orderId" column="order_id"/>
+            <result property="itemName" column="item_name"/>
+        </collection>
+    </resultMap>
+
+
+    <select id="getOrderById" parameterType="java.lang.Long" resultMap="Order">
+        SELECT o.id,
+               o.order_status_id,
+               o.customer_name,
+               o.customer_phone,
+               o.customer_comment,
+               i.id,
+               i.order_id,
+               i.item_name
+        FROM "order" o
+                 JOIN order_item i on o.id = i.order_id
+        WHERE o.id = #{id}
+    </select>
+</mapper>

@@ -30,14 +30,4 @@ public class OrderDTO {
         return order;
     }
 
-    public static OrderDTO buildOrderDto(Order order, List<OrderItem> orderItems) {
-        OrderDTO orderDto = new OrderDTO();
-        orderDto.setId(order.getId());
-        orderDto.setOrderStatusId(order.getOrderStatusId());
-        orderDto.setCustomerName(order.getCustomerName());
-        orderDto.setCustomerPhone(order.getCustomerPhone());
-        orderDto.setCustomerComment(order.getCustomerComment());
-        orderDto.setOrderItems(orderItems);
-        return orderDto;
-    }
 }

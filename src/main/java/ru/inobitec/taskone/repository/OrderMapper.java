@@ -1,6 +1,7 @@
 package ru.inobitec.taskone.repository;
 
 import org.apache.ibatis.annotations.*;
+import ru.inobitec.taskone.dto.OrderDTO;
 import ru.inobitec.taskone.model.Order;
 import ru.inobitec.taskone.model.OrderItem;
 
@@ -25,16 +26,11 @@ public interface OrderMapper {
             "WHERE id = #{id}")
     void updateOrderItem(OrderItem orderItem);
 
-    @Select("SELECT id, order_status_id AS orderStatusId, customer_name AS customerName, customer_phone AS customerPhone," +
-            " customer_comment AS customerComment FROM \"order\" WHERE id=#{id}")
-    Order selectById(Long id);
-
-    @Select("SELECT id, order_id AS orderId, item_name AS itemName FROM order_item WHERE order_id = #{id}")
-    List<OrderItem> getOrderItemsById(Long id);
-
     @Delete("DELETE FROM \"order\" WHERE id = #{id}")
     void deleteOrderById(Long id);
 
     @Delete("DELETE FROM order_item WHERE order_id = #{id}")
     void deleteOrderItemsById(Long id);
+
+    OrderDTO getOrderById(Long id);
 }

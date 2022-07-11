@@ -28,7 +28,7 @@ public class OrderController {
 
     @GetMapping("/order/{id}")
     public ResponseEntity<OrderDTO> getOrderById(@PathVariable("id") Long id) {
-        return new ResponseEntity(orderService.getOrderById(id), HttpStatus.OK);
+        return new ResponseEntity<OrderDTO>(orderService.getOrderById(id), HttpStatus.OK);
     }
 
     @DeleteMapping("/deleteOrder/{id}")
