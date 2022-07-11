@@ -30,4 +30,30 @@
                  JOIN order_item i on o.id = i.order_id
         WHERE o.id = #{id}
     </select>
+
+
+    <insert id="addOrder" parameterType="ru.inobitec.taskone.dto.OrderDTO">
+        <selectKey keyProperty="id" keyColumn="id" resultType="long" order="BEFORE">SELECT nextval('ORDER_SEQ')
+        </selectKey>
+        INSERT INTO "order" (id, order_status_id, customer_name, customer_phone, customer_comment)
+        VALUES (#{id}, #{orderStatusId}, #{customerName}, #{customerPhone}, #{customerComment});
+    </insert>
+
+
+    <insert id="addOrderItems" keyColumn="id" keyProperty="id" parameterType="ru.inobitec.taskone.model.OrderItem">
+        insert into order_item(order_id,item_name)
+        values
+        <foreach collection="items" item="item" open="(" separator="),(" close=")">
+            #{orderId}, #{item.itemName}
+        </foreach>
+    </insert>
+
+    <delete id="deleteOrderById">
+        DELETE
+        FROM order_item
+        WHERE order_id = #{id};
+        DELETE
+        FROM "order"
+        WHERE id = #{id};
+    </delete>
 </mapper>

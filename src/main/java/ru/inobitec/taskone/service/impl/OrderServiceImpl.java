@@ -15,13 +15,8 @@ public class OrderServiceImpl implements OrderService {
     private final OrderMapper orderMapper;
 
     public void addOrder(OrderDTO newOrder) {
-        Order order = newOrder.OrderFromDto();
-        orderMapper.addOrder(order);
-        Long id = order.getId();
-        newOrder.getOrderItems().forEach((item) -> {
-            item.setOrderId(id);
-            orderMapper.addOrderItem(item);
-        });
+        orderMapper.addOrder(newOrder);
+        orderMapper.addOrderItems(newOrder.getOrderItems(), newOrder.getId());
     }
 
     public void updateOrder(OrderDTO orderUpdate) {
@@ -39,7 +34,6 @@ public class OrderServiceImpl implements OrderService {
     }
 
     public void deleteOrderById(Long id) {
-        orderMapper.deleteOrderItemsById(id);
         orderMapper.deleteOrderById(id);
     }
 }
