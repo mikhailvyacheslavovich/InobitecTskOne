@@ -19,15 +19,4 @@ public class OrderDTO {
     private String customerPhone;
     private String customerComment;
     List<OrderItem> orderItems;
-
-    public Order OrderFromDto() {
-        Order order = new Order();
-        order.setId(id);
-        order.setOrderStatusId(orderStatusId);
-        order.setCustomerComment(customerComment);
-        order.setCustomerName(customerName);
-        order.setCustomerPhone(customerPhone);
-        return order;
-    }
-
 }

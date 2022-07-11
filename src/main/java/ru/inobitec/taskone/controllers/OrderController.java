@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.inobitec.taskone.dto.OrderDTO;
-import ru.inobitec.taskone.dto.Test;
+
 import ru.inobitec.taskone.service.OrderService;
 
 @RestController
@@ -16,14 +16,14 @@ public class OrderController {
     private final OrderService orderService;
 
     @PostMapping("/order")
-    public ResponseEntity<String> addOrder(@RequestBody OrderDTO newOrder) {
+    public ResponseEntity<String> addOrder(@RequestBody OrderDTO newOrder, @PathVariable("id") Long id) {
         orderService.addOrder(newOrder);
         return ResponseEntity.status(HttpStatus.OK).body("A new order has been successfully created");
     }
 
-    @PutMapping("/updateOrder")
-    public ResponseEntity<String> updateOrder(@RequestBody OrderDTO orderUpdate) {
-        orderService.updateOrder(orderUpdate);
+    @PutMapping("/updateOrder/{id}")
+    public ResponseEntity<String> updateOrder(@RequestBody OrderDTO orderUpdate, @PathVariable("id") Long id) {
+        orderService.updateOrder(orderUpdate, id);
         return ResponseEntity.status(HttpStatus.OK).body("Order has been updated successfully");
     }
 

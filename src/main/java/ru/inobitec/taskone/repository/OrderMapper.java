@@ -11,16 +11,16 @@ import java.util.List;
 public interface OrderMapper {
 
     Long addOrder(OrderDTO newOrder);
+
     void addOrderItems(List<OrderItem> items, Long orderId);
 
-    @Update("UPDATE \"order\" SET order_status_id = #{orderStatusId}, customer_name = #{customerName}," +
-            " customer_phone = #{customerPhone}, customer_comment = #{customerComment} WHERE id = #{id}")
-    void updateOrder(Order order);
 
-    @Update("UPDATE order_item SET order_id = #{orderId}, item_name = #{itemName} " +
-            "WHERE id = #{id}")
-    void updateOrderItem(OrderItem orderItem);
+    void updateOrder(OrderDTO order, Long idOfOrder);
+
+    void updateOrderItems(List<OrderItem> items, Long idOfOrder);
+
 
     void deleteOrderById(Long id);
+
     OrderDTO getOrderById(Long id);
 }
