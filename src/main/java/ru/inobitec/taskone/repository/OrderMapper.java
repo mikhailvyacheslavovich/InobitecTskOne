@@ -6,11 +6,12 @@ import ru.inobitec.taskone.model.Order;
 import ru.inobitec.taskone.model.OrderItem;
 
 import java.util.List;
+import java.util.Optional;
 
 @Mapper
 public interface OrderMapper {
 
-    Long addOrder(OrderDTO newOrder);
+    void addOrder(OrderDTO newOrder);
 
     void addOrderItems(List<OrderItem> items, Long orderId);
 
@@ -22,5 +23,5 @@ public interface OrderMapper {
 
     void deleteOrderById(Long id);
 
-    OrderDTO getOrderById(Long id);
+    Optional<OrderDTO> getOrderById(Long id);
 }

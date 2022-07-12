@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import ru.inobitec.taskone.dto.OrderDTO;
-import ru.inobitec.taskone.model.Order;
+import ru.inobitec.taskone.exceptions.ResourceNotFoundException;
 import ru.inobitec.taskone.repository.OrderMapper;
 import ru.inobitec.taskone.service.OrderService;
 
@@ -13,6 +13,12 @@ import ru.inobitec.taskone.service.OrderService;
 public class OrderServiceImpl implements OrderService {
 
     private final OrderMapper orderMapper;
+
+    @Override
+    public OrderDTO getOrderById(Long id) {
+        return orderMapper.getOrderById(id).orElseThrow(
+                () -> new ResourceNotFoundException("Order with id " + id + " not found"));
+    }
 
     @Override
     public void addOrder(OrderDTO newOrder) {
@@ -26,10 +32,6 @@ public class OrderServiceImpl implements OrderService {
         orderMapper.updateOrderItems(orderUpdate.getOrderItems(), id);
     }
 
-    @Override
-    public OrderDTO getOrderById(Long id) {
-        return orderMapper.getOrderById(id);
-    }
 
     @Override
     public void deleteOrderById(Long id) {
