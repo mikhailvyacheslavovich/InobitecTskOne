@@ -31,6 +31,19 @@
         WHERE o.id = #{id}
     </select>
 
+    <select id="getAllOrders" parameterType="java.lang.Long" resultMap="Order">
+        SELECT o.id,
+               o.order_status_id,
+               o.customer_name,
+               o.customer_phone,
+               o.customer_comment,
+               i.id,
+               i.order_id,
+               i.item_name
+        FROM "order" o
+                 JOIN order_item i on o.id = i.order_id
+    </select>
+
 
     <insert id="addOrder" parameterType="ru.inobitec.taskone.dto.OrderDTO">
         <selectKey keyProperty="id" keyColumn="id" resultType="long" order="BEFORE">SELECT nextval('ORDER_SEQ')

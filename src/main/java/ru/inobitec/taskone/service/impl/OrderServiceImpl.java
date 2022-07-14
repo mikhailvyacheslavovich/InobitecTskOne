@@ -8,12 +8,18 @@ import ru.inobitec.taskone.exceptions.ResourceNotFoundException;
 import ru.inobitec.taskone.repository.OrderMapper;
 import ru.inobitec.taskone.service.OrderService;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
 
     private final OrderMapper orderMapper;
 
+    @Override
+    public List<OrderDTO> getAllOrders() {
+        return orderMapper.getAllOrders();
+    }
     @Override
     public OrderDTO getOrderById(Long id) {
         return orderMapper.getOrderById(id).orElseThrow(

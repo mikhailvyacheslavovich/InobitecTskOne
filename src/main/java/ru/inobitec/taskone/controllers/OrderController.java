@@ -8,12 +8,19 @@ import ru.inobitec.taskone.dto.OrderDTO;
 
 import ru.inobitec.taskone.service.OrderService;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/")
 @RequiredArgsConstructor
 public class OrderController {
 
     private final OrderService orderService;
+
+    @GetMapping("/orders")
+    public List<OrderDTO> getAllOrders(){
+        return orderService.getAllOrders();
+    }
 
     @GetMapping("/order/{id}")
     public OrderDTO getOrderById(@PathVariable("id") Long id) {
@@ -33,7 +40,8 @@ public class OrderController {
     }
 
     @PutMapping("/updateOrder/{id}")
-    public ResponseEntity<String> updateOrder(@RequestBody OrderDTO orderUpdate, @PathVariable("id") Long id) {
+    public ResponseEntity<String> updateOrder(@RequestBody OrderDTO orderUpdate,
+                                              @PathVariable("id") Long id) {
         try {
             orderService.updateOrder(orderUpdate, id);
             return ResponseEntity.status(HttpStatus.OK).body("Order has been updated successfully");
@@ -53,5 +61,4 @@ public class OrderController {
                     .body("Error while deleting new order " + ex.getCause());
         }
     }
-
 }
