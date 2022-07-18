@@ -1,6 +1,9 @@
 package ru.inobitec.taskone.model;
 
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.util.Date;
 
 
 @Data
@@ -9,7 +12,10 @@ import lombok.*;
 public class Order {
     Long id;
     private Integer orderStatusId;
-    private String customerName;
+    private String customerFirstName;
+    private String customerLastName;
+    @DateTimeFormat(pattern = "dd.MM.yyyy")
+    private Date customerBirthday;
     private String customerPhone;
     private String customerComment;
 }

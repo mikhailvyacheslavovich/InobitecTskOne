@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import ru.inobitec.taskone.dto.OrderDTO;
+import ru.inobitec.taskone.model.Order;
 import ru.inobitec.taskone.model.Patient;
 
 import java.util.HashMap;
@@ -15,17 +16,19 @@ import java.util.Map;
 @Component
 @AllArgsConstructor
 public class HttpRestTempClient {
-    private static final String URL_PATIENT = "http://localhost:8081/patient";
+    private static final String URL = "http://localhost:8081/";
 
 
-    public Patient getPatientInfoByName(String name) {
+    public Patient getPatientInfoByName(Order order) {
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
-        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(URL_PATIENT + "Name")
-                .queryParam("name", name);
+        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(URL + "patientName")
+                .queryParam("firstName", order.getCustomerFirstName())
+                .queryParam("lastName", order.getCustomerLastName())
+                .queryParam("birthday",order.getCustomerBirthday());
 
         ResponseEntity<Patient> response = restTemplate.exchange(builder.toUriString(),
                 HttpMethod.GET, entity, Patient.class);
@@ -33,19 +36,19 @@ public class HttpRestTempClient {
         return response.getBody();
     }
 
-    public void addNewPatient(OrderDTO order){
+    public void addNewPatient(Order order){
         RestTemplate restTemplate = new RestTemplate();
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
         Map<String, Object> map = new HashMap<>();
-        map.put("lastName", order.getCustomerName());
+        map.put("lastName", order.getCustomerLastName());
         map.put("phone", order.getCustomerPhone());
 
         HttpEntity<Map<String, Object>> entity = new HttpEntity<>(map, headers);
 
-        ResponseEntity<String> response = restTemplate.postForEntity(URL_PATIENT, entity, String.class);
+        ResponseEntity<String> response = restTemplate.postForEntity(URL + "patient", entity, String.class);
 
     }
 
@@ -54,6 +57,6 @@ public class HttpRestTempClient {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<Patient> requestBody = new HttpEntity<>(patient, headers);
-        restTemplate.put("http://localhost:8081/updatePatient/" +  patient.getId(), requestBody);
+        restTemplate.put(URL+ "updatePatient/" +  patient.getId(), requestBody);
     }
 }
