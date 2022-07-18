@@ -15,7 +15,6 @@ public interface OrderMapper {
 
     void addOrderItems(List<OrderItem> items, Long orderId);
 
-
     void updateOrder(OrderDTO order, Long idOfOrder);
 
     void updateOrderItems(List<OrderItem> items, Long idOfOrder);

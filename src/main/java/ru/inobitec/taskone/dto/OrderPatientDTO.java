@@ -2,11 +2,10 @@ package ru.inobitec.taskone.dto;
 
 import lombok.*;
 import ru.inobitec.taskone.model.Patient;
-@Setter
-@Getter
+@Data
 @RequiredArgsConstructor
 @AllArgsConstructor
-public class OrderPatient {
+public class OrderPatientDTO {
     private OrderDTO order;
     private Patient patient;
 }

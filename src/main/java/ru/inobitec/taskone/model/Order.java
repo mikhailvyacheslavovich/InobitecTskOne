@@ -2,8 +2,8 @@ package ru.inobitec.taskone.model;
 
 import lombok.*;
 
-@Setter
-@Getter
+
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class Order {

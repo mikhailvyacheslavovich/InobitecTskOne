@@ -1,16 +1,12 @@
 package ru.inobitec.taskone.dto;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import ru.inobitec.taskone.model.OrderItem;
 import ru.inobitec.taskone.model.Order;
 
 import java.util.List;
 
-@Setter
-@Getter
+@Data
 @RequiredArgsConstructor
 public class OrderDTO {
     private Long id;

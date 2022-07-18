@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.inobitec.taskone.dto.OrderDTO;
 
-import ru.inobitec.taskone.dto.OrderPatient;
+import ru.inobitec.taskone.dto.OrderPatientDTO;
 import ru.inobitec.taskone.http.HttpRestTempClient;
 import ru.inobitec.taskone.model.Patient;
 import ru.inobitec.taskone.service.OrderService;
@@ -28,9 +28,9 @@ public class OrderController {
     }
 
     @GetMapping("/order/{id}")
-    public OrderPatient getOrderById(@PathVariable("id") Long id) {
+    public OrderPatientDTO getOrderById(@PathVariable("id") Long id) {
         OrderDTO order = orderService.getOrderById(id);
-        return new OrderPatient(order, httpRestTempClient.getPatientInfoByName(order.getCustomerName()));
+        return new OrderPatientDTO(order, httpRestTempClient.getPatientInfoByName(order.getCustomerName()));
     }
 
     @PostMapping("/order")
