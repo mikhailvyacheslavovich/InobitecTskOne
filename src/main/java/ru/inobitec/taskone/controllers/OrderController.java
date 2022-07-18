@@ -8,6 +8,7 @@ import ru.inobitec.taskone.dto.OrderDTO;
 
 import ru.inobitec.taskone.dto.OrderPatient;
 import ru.inobitec.taskone.http.HttpRestTempClient;
+import ru.inobitec.taskone.model.Patient;
 import ru.inobitec.taskone.service.OrderService;
 
 import java.util.List;
@@ -34,7 +35,7 @@ public class OrderController {
 
     @PostMapping("/order")
     public String addOrder(@RequestBody OrderDTO newOrder) {
-        if (httpRestTempClient.getPatientInfoByName(newOrder.getCustomerName()) == null){
+        if (httpRestTempClient.getPatientInfoByName(newOrder.getCustomerName()) == null) {
             httpRestTempClient.addNewPatient(newOrder);
         }
         httpRestTempClient.getPatientInfoByName(newOrder.getCustomerName());
@@ -43,15 +44,16 @@ public class OrderController {
     }
 
     @PutMapping("/updateOrder/{id}")
-    public ResponseEntity<String> updateOrder(@RequestBody OrderDTO orderUpdate,
+    public String updateOrder(@RequestBody OrderDTO orderUpdate,
                                               @PathVariable("id") Long id) {
-        try {
-            orderService.updateOrder(orderUpdate, id);
-            return ResponseEntity.status(HttpStatus.OK).body("Order has been updated successfully");
-        } catch (Exception ex) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Error while updating new order " + ex.getCause());
+        Patient patient = httpRestTempClient.getPatientInfoByName(orderUpdate.getCustomerName());
+        if (!(patient.getLastName().equals(orderUpdate.getCustomerName()) && patient.getPhone().equals(orderUpdate.getCustomerPhone()))){
+            patient.setLastName(orderUpdate.getCustomerName());
+            patient.setPhone(orderUpdate.getCustomerPhone());
+            httpRestTempClient.updatePatient(patient);
         }
+        orderService.updateOrder(orderUpdate, id);
+        return "order has been updated successfully";
     }
 
     @DeleteMapping("/deleteOrder/{id}")

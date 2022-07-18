@@ -1,7 +1,6 @@
 package ru.inobitec.taskone.http;
 
 import lombok.AllArgsConstructor;
-import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -37,11 +36,24 @@ public class HttpRestTempClient {
     public void addNewPatient(OrderDTO order){
         RestTemplate restTemplate = new RestTemplate();
 
-        Map<String, String> map = new HashMap<>();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        Map<String, Object> map = new HashMap<>();
         map.put("lastName", order.getCustomerName());
         map.put("phone", order.getCustomerPhone());
 
-        ResponseEntity<Void> response = restTemplate.postForEntity(URL_PATIENT, map, Void.class);
+        HttpEntity<Map<String, Object>> entity = new HttpEntity<>(map, headers);
 
+        ResponseEntity<String> response = restTemplate.postForEntity(URL_PATIENT, entity, String.class);
+
+    }
+
+    public void updatePatient(Patient patient){
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<Patient> requestBody = new HttpEntity<>(patient, headers);
+        restTemplate.put("http://localhost:8081/updatePatient/" +  patient.getId(), requestBody);
     }
 }
