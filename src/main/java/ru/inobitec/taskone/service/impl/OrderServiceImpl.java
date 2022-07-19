@@ -5,8 +5,7 @@ import org.springframework.stereotype.Service;
 
 import ru.inobitec.taskone.dto.OrderDTO;
 import ru.inobitec.taskone.dto.OrderPatientDTO;
-import ru.inobitec.taskone.exceptions.ResourceNotFoundException;
-import ru.inobitec.taskone.http.HttpRestTempClient;
+import ru.inobitec.taskone.http.RestClient;
 import ru.inobitec.taskone.model.Patient;
 import ru.inobitec.taskone.repository.OrderMapper;
 import ru.inobitec.taskone.service.OrderService;
@@ -19,7 +18,7 @@ public class OrderServiceImpl implements OrderService {
 
     private final OrderMapper orderMapper;
 
-    private final HttpRestTempClient httpRestTempClient;
+    private final RestClient restClient;
 
     @Override
     public List<OrderDTO> getAllOrders() {
@@ -28,27 +27,28 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrderPatientDTO getOrderById(Long id) {
         OrderDTO order = orderMapper.getOrderById(id);
-        return new OrderPatientDTO(order, httpRestTempClient.getPatientInfoByName(order.getOrder()));
+        Patient cc = restClient.getPatientInfoByName(order.getOrder());
+        return new OrderPatientDTO(order, restClient.getPatientInfoByName(order.getOrder()));
     }
 
     @Override
     public void addOrder(OrderDTO newOrder) {
-        if (httpRestTempClient.getPatientInfoByName(newOrder.getOrder()) == null) {
-            httpRestTempClient.addNewPatient(newOrder.getOrder());
+        if (restClient.getPatientInfoByName(newOrder.getOrder()) == null) {
+            restClient.addNewPatient(newOrder.getOrder());
         }
-        httpRestTempClient.getPatientInfoByName(newOrder.getOrder());
-        orderMapper.addOrder(newOrder);
+        restClient.getPatientInfoByName(newOrder.getOrder());
+        orderMapper.addOrder(newOrder.getOrder());
         orderMapper.addOrderItems(newOrder.getOrderItems(), newOrder.getOrder().getId());
     }
 
     @Override
     public void updateOrder(OrderDTO orderUpdate, Long id) {
-        Patient patient = httpRestTempClient.getPatientInfoByName(orderUpdate.getOrder());
+        Patient patient = restClient.getPatientInfoByName(orderUpdate.getOrder());
         if (!(orderUpdate.orderPatientEquals(patient))){
             patient.setLastName(orderUpdate.getOrder().getCustomerLastName());
             patient.setFirstName(orderUpdate.getOrder().getCustomerFirstName());
             patient.setBirthday(orderUpdate.getOrder().getCustomerBirthday());
-            httpRestTempClient.updatePatient(patient);
+            restClient.updatePatient(patient);
         }
         orderMapper.updateOrder(orderUpdate, id);
         orderMapper.updateOrderItems(orderUpdate.getOrderItems(), id);

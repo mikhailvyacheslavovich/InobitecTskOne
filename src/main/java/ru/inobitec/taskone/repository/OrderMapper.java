@@ -11,7 +11,7 @@ import java.util.Optional;
 @Mapper
 public interface OrderMapper {
 
-    void addOrder(OrderDTO newOrder);
+    void addOrder(Order newOrder);
 
     void addOrderItems(List<OrderItem> items, Long orderId);
 

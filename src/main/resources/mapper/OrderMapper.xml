@@ -4,11 +4,13 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="ru.inobitec.taskone.repository.OrderMapper">
     <resultMap id="Order" type="ru.inobitec.taskone.dto.OrderDTO">
-        <result property="id" column="id"/>
-        <result property="orderStatusId" column="ORDER_STATUS_ID"/>
-        <result property="customerName" column="CUSTOMER_NAME"/>
-        <result property="customerPhone" column="customer_phone"/>
-        <result property="customerComment" column="customer_comment"/>
+        <result property="order.id" column="id"/>
+        <result property="order.orderStatusId" column="ORDER_STATUS_ID"/>
+        <result property="order.customerFirstName" column="CUSTOMER_FIRST_NAME"/>
+        <result property="order.customerLastName" column="CUSTOMER_LAST_NAME"/>
+        <result property="order.customerBirthday" column="CUSTOMER_Birthday"/>
+        <result property="order.customerPhone" column="customer_phone"/>
+        <result property="order.customerComment" column="customer_comment"/>
         <collection property="orderItems" javaType="ArrayList" ofType="ru.inobitec.taskone.model.OrderItem">
             <result property="id" column="id"/>
             <result property="orderId" column="order_id"/>
@@ -20,7 +22,9 @@
     <select id="getOrderById" parameterType="java.lang.Long" resultMap="Order">
         SELECT o.id,
                o.order_status_id,
-               o.customer_name,
+               o.customer_first_name,
+               o.customer_last_name,
+               o.customer_birthday,
                o.customer_phone,
                o.customer_comment,
                i.id,
@@ -45,11 +49,13 @@
     </select>
 
 
-    <insert id="addOrder" parameterType="ru.inobitec.taskone.dto.OrderDTO">
+    <insert id="addOrder" parameterType="ru.inobitec.taskone.model.Order">
         <selectKey keyProperty="id" keyColumn="id" resultType="long" order="BEFORE">SELECT nextval('ORDER_SEQ')
         </selectKey>
-        INSERT INTO "order" (id, order_status_id, customer_name, customer_phone, customer_comment)
-        VALUES (#{id}, #{orderStatusId}, #{customerName}, #{customerPhone}, #{customerComment});
+        INSERT INTO "order" (id, order_status_id, customer_first_name, customer_last_name,
+        customer_phone, customer_birthday, customer_comment)
+        VALUES (#{id}, #{orderStatusId}, #{customerFirstName}, #{customerLastName}, #{customerPhone},
+        #{customerBirthday}, #{customerComment});
     </insert>
 
 

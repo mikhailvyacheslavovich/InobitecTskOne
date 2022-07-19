@@ -5,7 +5,6 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
-import ru.inobitec.taskone.dto.OrderDTO;
 import ru.inobitec.taskone.model.Order;
 import ru.inobitec.taskone.model.Patient;
 
@@ -15,7 +14,7 @@ import java.util.Map;
 
 @Component
 @AllArgsConstructor
-public class HttpRestTempClient {
+public class RestClient {
     private static final String URL = "http://localhost:8081/";
 
 
@@ -27,8 +26,8 @@ public class HttpRestTempClient {
 
         UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(URL + "patientName")
                 .queryParam("firstName", order.getCustomerFirstName())
-                .queryParam("lastName", order.getCustomerLastName())
-                .queryParam("birthday",order.getCustomerBirthday());
+                .queryParam("lastName", order.getCustomerLastName());
+                //.queryParam("birthday",order.getCustomerBirthday());
 
         ResponseEntity<Patient> response = restTemplate.exchange(builder.toUriString(),
                 HttpMethod.GET, entity, Patient.class);
@@ -43,8 +42,10 @@ public class HttpRestTempClient {
         headers.setContentType(MediaType.APPLICATION_JSON);
 
         Map<String, Object> map = new HashMap<>();
+        map.put("firstName", order.getCustomerFirstName());
         map.put("lastName", order.getCustomerLastName());
         map.put("phone", order.getCustomerPhone());
+        map.put("birthday", order.getCustomerBirthday());
 
         HttpEntity<Map<String, Object>> entity = new HttpEntity<>(map, headers);
 
