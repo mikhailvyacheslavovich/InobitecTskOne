@@ -15,8 +15,8 @@ public class Order {
     private Integer orderStatusId;
     private String customerFirstName;
     private String customerLastName;
-    @DateTimeFormat(pattern = "dd.MM.yyyy")
-    @JsonFormat(pattern="dd.MM.yyyy")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(locale="ru", timezone="GMT+3", pattern="dd-MM-yyyy")
     private Date customerBirthday;
     private String customerPhone;
     private String customerComment;

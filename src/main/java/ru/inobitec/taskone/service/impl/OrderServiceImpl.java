@@ -45,12 +45,10 @@ public class OrderServiceImpl implements OrderService {
     public void updateOrder(OrderDTO orderUpdate, Long id) {
         Patient patient = restClient.getPatientInfoByName(orderUpdate.getOrder());
         if (!(orderUpdate.orderPatientEquals(patient))){
-            patient.setLastName(orderUpdate.getOrder().getCustomerLastName());
-            patient.setFirstName(orderUpdate.getOrder().getCustomerFirstName());
-            patient.setBirthday(orderUpdate.getOrder().getCustomerBirthday());
+            patient.setPhone(orderUpdate.getOrder().getCustomerPhone());
             restClient.updatePatient(patient);
         }
-        orderMapper.updateOrder(orderUpdate, id);
+        orderMapper.updateOrder(orderUpdate.getOrder(), id);
         orderMapper.updateOrderItems(orderUpdate.getOrderItems(), id);
     }
 

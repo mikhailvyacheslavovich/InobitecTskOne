@@ -36,7 +36,6 @@ public class OrderController {
     @PutMapping("/updateOrder/{id}")
     public String updateOrder(@RequestBody OrderDTO orderUpdate,
                               @PathVariable("id") Long id) {
-
         orderService.updateOrder(orderUpdate, id);
         return "order has been updated successfully";
     }

@@ -67,18 +67,20 @@
         </foreach>
     </insert>
 
-    <update id="updateOrder" parameterType="ru.inobitec.taskone.dto.OrderDTO">
+    <update id="updateOrder" parameterType="ru.inobitec.taskone.model.Order">
         update "order"
         set order_status_id  = #{order.orderStatusId},
-            customer_name    = #{order.customerName},
+            customer_first_name = #{order.customerFirstName},
+            customer_last_name  = #{order.customerLastName},
+            customer_birthday   = #{order.customerBirthday},
             customer_phone   = #{order.customerPhone},
             customer_comment = #{order.customerComment}
-        where id = #{idOfOrder};
+        where id = #{id};
     </update>
 
     <update id="updateOrderItems" parameterType="ru.inobitec.taskone.model.OrderItem">
         <foreach collection="items" item="item" separator=";">
-            UPDATE order_item SET item_name=#{item.itemName} WHERE order_id=#{idOfOrder} AND id = #{item.id};
+            UPDATE order_item SET item_name=#{item.itemName} WHERE order_id=#{id} AND id = #{item.id};
         </foreach>
     </update>
 
