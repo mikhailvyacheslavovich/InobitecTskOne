@@ -17,7 +17,6 @@ import java.util.Map;
 public class RestClient {
     private static final String URL = "http://localhost:8081/";
 
-
     public Patient getPatientInfoByName(Order order) {
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
@@ -27,7 +26,7 @@ public class RestClient {
         UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(URL + "patientName")
                 .queryParam("firstName", order.getCustomerFirstName())
                 .queryParam("lastName", order.getCustomerLastName());
-                //.queryParam("birthday",order.getCustomerBirthday());
+        //.queryParam("birthday",order.getCustomerBirthday());
 
         ResponseEntity<Patient> response = restTemplate.exchange(builder.toUriString(),
                 HttpMethod.GET, entity, Patient.class);
@@ -35,7 +34,7 @@ public class RestClient {
         return response.getBody();
     }
 
-    public void addNewPatient(Order order){
+    public void addNewPatient(Order order) {
         RestTemplate restTemplate = new RestTemplate();
 
         HttpHeaders headers = new HttpHeaders();
@@ -50,14 +49,13 @@ public class RestClient {
         HttpEntity<Map<String, Object>> entity = new HttpEntity<>(map, headers);
 
         ResponseEntity<String> response = restTemplate.postForEntity(URL + "patient", entity, String.class);
-
     }
 
-    public void updatePatient(Patient patient){
+    public void updatePatient(Patient patient) {
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<Patient> requestBody = new HttpEntity<>(patient, headers);
-        restTemplate.put(URL+ "updatePatient/" +  patient.getId(), requestBody);
+        restTemplate.put(URL + "updatePatient/" + patient.getId(), requestBody);
     }
 }
