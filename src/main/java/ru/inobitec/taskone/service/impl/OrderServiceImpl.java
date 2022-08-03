@@ -27,8 +27,9 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrderPatientDTO getOrderById(Long id) {
         OrderDTO order = orderMapper.getOrderById(id);
-        Patient cc = restClient.getPatientInfoByName(order.getOrder());
-        return new OrderPatientDTO(order, restClient.getPatientInfoByName(order.getOrder()));
+        //Patient cc = restClient.getPatientInfoByName(order.getOrder());
+        //return new OrderPatientDTO(order, restClient.getPatientInfoByName(order.getOrder()));
+        return new OrderPatientDTO(order, new Patient());
     }
 
     @Override
@@ -43,11 +44,14 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void updateOrder(OrderDTO orderUpdate, Long id) {
+        /*
         Patient patient = restClient.getPatientInfoByName(orderUpdate.getOrder());
         if (!(orderUpdate.orderPatientEquals(patient))){
             patient.setPhone(orderUpdate.getOrder().getCustomerPhone());
             restClient.updatePatient(patient);
         }
+        */
+
         orderMapper.updateOrder(orderUpdate.getOrder(), id);
         orderMapper.updateOrderItems(orderUpdate.getOrderItems(), id);
     }
