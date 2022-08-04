@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 
 import ru.inobitec.taskone.dto.OrderDTO;
 import ru.inobitec.taskone.dto.OrderPatientDTO;
-import ru.inobitec.taskone.http.RestClient;
+import ru.inobitec.taskone.service.PatientService;
 import ru.inobitec.taskone.model.Patient;
 import ru.inobitec.taskone.repository.OrderMapper;
 import ru.inobitec.taskone.service.OrderService;
@@ -18,7 +18,7 @@ public class OrderServiceImpl implements OrderService {
 
     private final OrderMapper orderMapper;
 
-    private final RestClient restClient;
+    private final PatientService patientService;
 
     @Override
     public List<OrderDTO> getAllOrders() {
@@ -34,10 +34,10 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void addOrder(OrderDTO newOrder) {
-        if (restClient.getPatientInfoByName(newOrder.getOrder()) == null) {
-            restClient.addNewPatient(newOrder.getOrder());
+        if (patientService.getPatientInfoByName(newOrder.getOrder()) == null) {
+            patientService.addNewPatient(newOrder.getOrder());
         }
-        restClient.getPatientInfoByName(newOrder.getOrder());
+        patientService.getPatientInfoByName(newOrder.getOrder());
         orderMapper.addOrder(newOrder.getOrder());
         orderMapper.addOrderItems(newOrder.getOrderItems(), newOrder.getOrder().getId());
     }
@@ -56,9 +56,9 @@ public class OrderServiceImpl implements OrderService {
         orderMapper.updateOrderItems(orderUpdate.getOrderItems(), id);
     }
 
-
     @Override
     public void deleteOrderById(Long id) {
+        orderMapper.deleteOrderItemsById(id);
         orderMapper.deleteOrderById(id);
     }
 }

@@ -21,6 +21,8 @@ public interface OrderMapper {
 
     void deleteOrderById(Long id);
 
+    void deleteOrderItemsById(Long id);
+
     OrderDTO getOrderById(Long id);
 
     List<OrderDTO> getAllOrders();

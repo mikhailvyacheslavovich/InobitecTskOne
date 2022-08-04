@@ -1,4 +1,4 @@
-package ru.inobitec.taskone.http;
+package ru.inobitec.taskone.service;
 
 import lombok.AllArgsConstructor;
 import org.springframework.http.*;
@@ -14,7 +14,7 @@ import java.util.Map;
 
 @Component
 @AllArgsConstructor
-public class RestClient {
+public class PatientService {
     private static final String URL = "http://localhost:8081/";
 
     public Patient getPatientInfoByName(Order order) {

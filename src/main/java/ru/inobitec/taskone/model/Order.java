@@ -11,7 +11,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Order {
-    Long id;
+    private Long id;
     private Integer orderStatusId;
     private String customerFirstName;
     private String customerLastName;

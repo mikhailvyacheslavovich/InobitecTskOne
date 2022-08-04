@@ -8,6 +8,7 @@ import java.util.Date;
 @Data
 @RequiredArgsConstructor
 public class Session {
+    private Long id;
     private String sessionId;
     private Integer timeoutMinutes;
     private Date startTime;

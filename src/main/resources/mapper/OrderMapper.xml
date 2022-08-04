@@ -19,6 +19,8 @@
     </resultMap>
 
 
+
+
     <select id="getOrderById" parameterType="java.lang.Long" resultMap="Order">
         SELECT o.id,
                o.order_status_id,
@@ -60,7 +62,7 @@
 
 
     <insert id="addOrderItems" keyColumn="id" keyProperty="id" parameterType="ru.inobitec.taskone.model.OrderItem">
-        insert into order_item(order_id,item_name)
+        insert into order_item(order_id, item_name)
         values
         <foreach collection="items" item="item" open="(" separator="),(" close=")">
             #{orderId}, #{item.itemName}
@@ -80,16 +82,20 @@
 
     <update id="updateOrderItems" parameterType="ru.inobitec.taskone.model.OrderItem">
         <foreach collection="items" item="item" separator=";">
-            UPDATE order_item SET item_name=#{item.itemName} WHERE order_id=#{id} AND id = #{item.id};
+            UPDATE order_item SET item_name=#{item.itemName} WHERE id = #{item.id};
         </foreach>
     </update>
 
     <delete id="deleteOrderById">
         DELETE
-        FROM order_item
-        WHERE order_id = #{id};
-        DELETE
         FROM "order"
         WHERE id = #{id};
     </delete>
+
+    <delete id="deleteOrderItemsById">
+        DELETE
+        FROM order_item
+        WHERE order_id = #{id};
+    </delete>
+
 </mapper>
