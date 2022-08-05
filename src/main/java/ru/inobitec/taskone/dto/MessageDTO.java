@@ -3,7 +3,6 @@ package ru.inobitec.taskone.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.inobitec.taskone.dto.OrderDTO;
 
 @Data
 @NoArgsConstructor

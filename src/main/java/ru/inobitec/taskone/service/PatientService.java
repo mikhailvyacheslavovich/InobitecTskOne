@@ -25,8 +25,8 @@ public class PatientService {
 
         UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(URL + "patientName")
                 .queryParam("firstName", orderEntity.getCustomerFirstName())
-                .queryParam("lastName", orderEntity.getCustomerLastName());
-        //.queryParam("birthday",order.getCustomerBirthday());
+                .queryParam("lastName", orderEntity.getCustomerLastName())
+                .queryParam("birthday", orderEntity.getCustomerBirthday());
 
         ResponseEntity<PatientEntity> response = restTemplate.exchange(builder.toUriString(),
                 HttpMethod.GET, entity, PatientEntity.class);

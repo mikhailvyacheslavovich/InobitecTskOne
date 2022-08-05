@@ -24,36 +24,37 @@ public class OrderServiceImpl implements OrderService {
     public List<OrderDTO> getAllOrders() {
         return orderMapper.getAllOrders();
     }
+
     @Override
     public OrderPatientDTO getOrderById(Long id) {
         OrderDTO order = orderMapper.getOrderById(id);
-        //Patient cc = restClient.getPatientInfoByName(order.getOrder());
-        //return new OrderPatientDTO(order, restClient.getPatientInfoByName(order.getOrder()));
-        return new OrderPatientDTO(order, new PatientEntity());
+        //PatientEntity cc = patientService.getPatientInfoByName(order.getOrderEntity());
+        return new OrderPatientDTO(order, patientService.getPatientInfoByName(order.getOrderEntity()));
     }
 
     @Override
     public void addOrder(OrderDTO newOrder) {
+
         if (patientService.getPatientInfoByName(newOrder.getOrderEntity()) == null) {
             patientService.addNewPatient(newOrder.getOrderEntity());
         }
         patientService.getPatientInfoByName(newOrder.getOrderEntity());
         orderMapper.addOrder(newOrder.getOrderEntity());
-        orderMapper.addOrderItems(newOrder.getOrderItemEntities(), newOrder.getOrderEntity().getId());
+        orderMapper.addOrderItems(newOrder.getOrderItems(), newOrder.getOrderEntity().getId());
+
     }
 
     @Override
     public void updateOrder(OrderDTO orderUpdate, Long id) {
         /*
-        Patient patient = restClient.getPatientInfoByName(orderUpdate.getOrder());
-        if (!(orderUpdate.orderPatientEquals(patient))){
-            patient.setPhone(orderUpdate.getOrder().getCustomerPhone());
-            restClient.updatePatient(patient);
+        PatientEntity patient = patientService.getPatientInfoByName(orderUpdate.getOrderEntity());
+        if (!(orderUpdate.orderPatientEquals(patient))) {
+            patient.setPhone(orderUpdate.getOrderEntity().getCustomerPhone());
+            patientService.updatePatient(patient);
         }
         */
-
         orderMapper.updateOrder(orderUpdate.getOrderEntity(), id);
-        orderMapper.updateOrderItems(orderUpdate.getOrderItemEntities(), id);
+        orderMapper.updateOrderItems(orderUpdate.getOrderItems(), id);
     }
 
     @Override

@@ -1,7 +1,6 @@
 package ru.inobitec.taskone.controllers;
 
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.inobitec.taskone.dto.OrderDTO;

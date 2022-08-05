@@ -4,20 +4,21 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="ru.inobitec.taskone.repository.OrderMapper">
     <resultMap id="Order" type="ru.inobitec.taskone.dto.OrderDTO">
-        <result property="orderEntity.id" column="id"/>
-        <result property="orderEntity.orderStatusId" column="ORDER_STATUS_ID"/>
-        <result property="orderEntity.customerFirstName" column="CUSTOMER_FIRST_NAME"/>
-        <result property="orderEntity.customerLastName" column="CUSTOMER_LAST_NAME"/>
-        <result property="orderEntity.customerBirthday" column="CUSTOMER_Birthday"/>
-        <result property="orderEntity.customerPhone" column="customer_phone"/>
-        <result property="orderEntity.customerComment" column="customer_comment"/>
-        <collection property="orderItems" javaType="ArrayList" ofType="ru.inobitec.taskone.model.OrderItemEntity">
-            <result property="id" column="id"/>
-            <result property="orderId" column="order_id"/>
-            <result property="itemName" column="item_name"/>
-        </collection>
+        <result property="newOrderEntity.id" column="id"/>
+        <result property="newOrderEntity.orderStatusId" column="ORDER_STATUS_ID"/>
+        <result property="newOrderEntity.customerFirstName" column="CUSTOMER_FIRST_NAME"/>
+        <result property="newOrderEntity.customerLastName" column="CUSTOMER_LAST_NAME"/>
+        <result property="newOrderEntity.customerBirthday" column="CUSTOMER_Birthday"/>
+        <result property="newOrderEntity.customerPhone" column="customer_phone"/>
+        <result property="newOrderEntity.customerComment" column="customer_comment"/>
+        <collection property="orderItems" javaType="ArrayList" resultMap="OrderItem"/>
     </resultMap>
 
+    <resultMap id="OrderItem" type="ru.inobitec.taskone.model.OrderItemEntity">
+        <result property="id" column="id"/>
+        <result property="orderId" column="order_id"/>
+        <result property="itemName" column="item_name"/>
+    </resultMap>
 
     <select id="getOrderById" parameterType="java.lang.Long" resultMap="Order">
         SELECT o.id,
@@ -52,7 +53,7 @@
     <insert id="addOrder" parameterType="ru.inobitec.taskone.model.OrderEntity">
         <selectKey keyProperty="id" keyColumn="id" resultType="long" order="BEFORE">SELECT nextval('ORDER_SEQ')
         </selectKey>
-        INSERT INTO "orderEntity" (id, order_status_id, customer_first_name, customer_last_name,
+        INSERT INTO "order" (id, order_status_id, customer_first_name, customer_last_name,
         customer_phone, customer_birthday, customer_comment)
         VALUES (#{id}, #{orderStatusId}, #{customerFirstName}, #{customerLastName}, #{customerPhone},
         #{customerBirthday}, #{customerComment});

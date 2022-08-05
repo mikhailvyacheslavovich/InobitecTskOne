@@ -1,6 +1,6 @@
 package ru.inobitec.taskone.filters;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import ru.inobitec.taskone.model.OrderSessionEntity;
 import ru.inobitec.taskone.service.SessionService;
 
@@ -11,11 +11,10 @@ import java.util.Date;
 
 
 @WebFilter("/orderServlet")
+@RequiredArgsConstructor
 public class OrderFilter implements Filter {
 
-    @Autowired
     SessionService sessionService;
-
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -40,7 +39,6 @@ public class OrderFilter implements Filter {
             }
         }
     }
-
 
     private boolean checkExpiring(OrderSessionEntity orderSessionEntity) {
         return (orderSessionEntity.getStartTime().getTime() + (orderSessionEntity.getTimeoutMinutes() * 60 * 1000)) > new Date().getTime();

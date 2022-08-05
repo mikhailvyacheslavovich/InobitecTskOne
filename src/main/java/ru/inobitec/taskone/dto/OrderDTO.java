@@ -11,7 +11,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class OrderDTO {
     private OrderEntity orderEntity;
-    private List<OrderItemEntity> orderItemEntities;
+    private List<OrderItemEntity> orderItems;
 
 
     public boolean orderPatientEquals(PatientEntity patientEntity) {

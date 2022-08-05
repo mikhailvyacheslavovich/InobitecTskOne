@@ -9,11 +9,11 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>ru.inobitec</groupId>
-    <artifactId>InobitecTaskOne</artifactId>
+    <artifactId>Order</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>war</packaging>
-    <name>InobitecTaskOne</name>
-    <description>InobitecTaskOne</description>
+    <name>Order</name>
+    <description>Order Microservice</description>
     <properties>
         <java.version>17</java.version>
     </properties>

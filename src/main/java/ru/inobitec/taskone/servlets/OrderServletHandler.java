@@ -57,9 +57,9 @@ public class OrderServletHandler extends DefaultHandler {
             case CUSTOMER_NAME -> elementValue = new StringBuilder();
             case CUSTOMER_PHONE -> elementValue = new StringBuilder();
             case CUSTOMER_COMMENT -> elementValue = new StringBuilder();
-            case ITEMS -> messageDTO.getOrderDTO().setOrderItemEntities(new ArrayList<OrderItemEntity>());
+            case ITEMS -> messageDTO.getOrderDTO().setOrderItems(new ArrayList<OrderItemEntity>());
             case ITEM -> {
-                messageDTO.getOrderDTO().getOrderItemEntities().add(new OrderItemEntity());
+                messageDTO.getOrderDTO().getOrderItems().add(new OrderItemEntity());
                 elementValue = new StringBuilder();
             }
             case ORDER -> messageDTO.getOrderDTO().setOrderEntity(new OrderEntity());
@@ -82,7 +82,7 @@ public class OrderServletHandler extends DefaultHandler {
     }
 
     private OrderItemEntity lastOrderItem() {
-        List<OrderItemEntity> list = messageDTO.getOrderDTO().getOrderItemEntities();
+        List<OrderItemEntity> list = messageDTO.getOrderDTO().getOrderItems();
         return list.get(list.size() - 1);
     }
 

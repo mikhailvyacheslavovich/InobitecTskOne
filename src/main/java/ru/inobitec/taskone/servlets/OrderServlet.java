@@ -1,7 +1,6 @@
 package ru.inobitec.taskone.servlets;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.xml.sax.SAXException;
 import ru.inobitec.taskone.dto.OrderDTO;
 import ru.inobitec.taskone.dto.MessageDTO;
@@ -21,8 +20,7 @@ import java.io.IOException;
 @WebServlet("/orderServlet")
 @RequiredArgsConstructor
 public class OrderServlet extends HttpServlet {
-
-    @Autowired
+    
     OrderService orderService;
 
     OrderServletHandler orderServletHandler;
@@ -40,7 +38,6 @@ public class OrderServlet extends HttpServlet {
         }
     }
 
-    //read
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
             parser.parse(request.getInputStream(), orderServletHandler);
@@ -53,7 +50,6 @@ public class OrderServlet extends HttpServlet {
         }
     }
 
-    //create
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
             parser.parse(request.getInputStream(), orderServletHandler);
@@ -65,7 +61,7 @@ public class OrderServlet extends HttpServlet {
             ex.printStackTrace();
         }
     }
-    //update
+
     public void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
             parser.parse(request.getInputStream(), orderServletHandler);
@@ -78,7 +74,7 @@ public class OrderServlet extends HttpServlet {
             ex.printStackTrace();
         }
     }
-    //delete
+
     public void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
             Long id = Long.parseLong(request.getParameter("id"));
@@ -89,5 +85,4 @@ public class OrderServlet extends HttpServlet {
             ex.printStackTrace();
         }
     }
-
 }
