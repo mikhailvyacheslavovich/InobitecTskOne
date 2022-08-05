@@ -7,7 +7,7 @@ import java.util.Date;
 
 @Data
 @RequiredArgsConstructor
-public class Session {
+public class OrderSessionEntity {
     private Long id;
     private String sessionId;
     private Integer timeoutMinutes;

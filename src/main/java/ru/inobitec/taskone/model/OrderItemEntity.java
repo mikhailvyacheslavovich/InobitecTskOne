@@ -4,7 +4,7 @@ import lombok.*;
 
 @Data
 @RequiredArgsConstructor
-public class OrderItem {
+public class OrderItemEntity {
     private Long id;
     private Long orderId;
     private String itemName;

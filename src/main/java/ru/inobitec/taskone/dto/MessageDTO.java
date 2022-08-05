@@ -1,4 +1,4 @@
-package ru.inobitec.taskone.model;
+package ru.inobitec.taskone.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -8,7 +8,7 @@ import ru.inobitec.taskone.dto.OrderDTO;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Message {
+public class MessageDTO {
     private String command;
     private OrderDTO orderDTO;
 }

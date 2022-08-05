@@ -1,22 +1,22 @@
 package ru.inobitec.taskone.dto;
 
 import lombok.*;
-import ru.inobitec.taskone.model.OrderItem;
-import ru.inobitec.taskone.model.Order;
-import ru.inobitec.taskone.model.Patient;
+import ru.inobitec.taskone.model.OrderEntity;
+import ru.inobitec.taskone.model.OrderItemEntity;
+import ru.inobitec.taskone.model.PatientEntity;
 
 import java.util.List;
 
 @Data
 @RequiredArgsConstructor
 public class OrderDTO {
-    private Order order;
-    private List<OrderItem> orderItems;
+    private OrderEntity orderEntity;
+    private List<OrderItemEntity> orderItemEntities;
 
 
-    public boolean orderPatientEquals(Patient patient) {
-        return getOrder().getCustomerFirstName().equals(patient.getFirstName()) &&
-                getOrder().getCustomerLastName().equals(patient.getLastName()) &&
-                getOrder().getCustomerBirthday().equals(patient.getBirthday());
+    public boolean orderPatientEquals(PatientEntity patientEntity) {
+        return getOrderEntity().getCustomerFirstName().equals(patientEntity.getFirstName()) &&
+                getOrderEntity().getCustomerLastName().equals(patientEntity.getLastName()) &&
+                getOrderEntity().getCustomerBirthday().equals(patientEntity.getBirthday());
     }
 }

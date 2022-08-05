@@ -1,10 +1,7 @@
 package ru.inobitec.taskone.service;
 
-import ru.inobitec.taskone.model.Session;
-
-import java.util.Date;
-import java.util.List;
+import ru.inobitec.taskone.model.OrderSessionEntity;
 
 public interface SessionService {
-    Session getSessionBySessionId(String sessionId);
+    OrderSessionEntity getSessionBySessionId(String sessionId);
 }

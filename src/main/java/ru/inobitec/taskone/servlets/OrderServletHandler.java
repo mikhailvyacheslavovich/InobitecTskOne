@@ -4,9 +4,9 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 import ru.inobitec.taskone.dto.OrderDTO;
-import ru.inobitec.taskone.model.Message;
-import ru.inobitec.taskone.model.Order;
-import ru.inobitec.taskone.model.OrderItem;
+import ru.inobitec.taskone.dto.MessageDTO;
+import ru.inobitec.taskone.model.OrderEntity;
+import ru.inobitec.taskone.model.OrderItemEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +32,7 @@ public class OrderServletHandler extends DefaultHandler {
 
     private StringBuilder elementValue;
 
-    private Message message;
+    private MessageDTO messageDTO;
 
     @Override
     public void characters(char[] ch, int start, int length) throws SAXException {
@@ -45,73 +45,48 @@ public class OrderServletHandler extends DefaultHandler {
 
     @Override
     public void startDocument() throws SAXException {
-        message = new Message();
+        messageDTO = new MessageDTO();
     }
 
     @Override
     public void startElement(String uri, String lName, String qName, Attributes attr) throws SAXException {
         switch (qName) {
-            case COMMAND:
+            case COMMAND -> elementValue = new StringBuilder();
+            case BODY -> messageDTO.setOrderDTO(new OrderDTO());
+            case ORDER_STATUS_ID -> elementValue = new StringBuilder();
+            case CUSTOMER_NAME -> elementValue = new StringBuilder();
+            case CUSTOMER_PHONE -> elementValue = new StringBuilder();
+            case CUSTOMER_COMMENT -> elementValue = new StringBuilder();
+            case ITEMS -> messageDTO.getOrderDTO().setOrderItemEntities(new ArrayList<OrderItemEntity>());
+            case ITEM -> {
+                messageDTO.getOrderDTO().getOrderItemEntities().add(new OrderItemEntity());
                 elementValue = new StringBuilder();
-                break;
-            case BODY:
-                message.setOrderDTO(new OrderDTO());
-                break;
-            case ORDER_STATUS_ID:
-                elementValue = new StringBuilder();
-                break;
-            case CUSTOMER_NAME:
-                elementValue = new StringBuilder();
-                break;
-            case CUSTOMER_PHONE:
-                elementValue = new StringBuilder();
-                break;
-            case CUSTOMER_COMMENT:
-                elementValue = new StringBuilder();
-                break;
-            case ITEMS:
-                message.getOrderDTO().setOrderItems(new ArrayList<OrderItem>());
-                break;
-            case ITEM:
-                message.getOrderDTO().getOrderItems().add(new OrderItem());
-                elementValue = new StringBuilder();
-                break;
-            case ORDER:
-                message.getOrderDTO().setOrder(new Order());
-                break;
+            }
+            case ORDER -> messageDTO.getOrderDTO().setOrderEntity(new OrderEntity());
         }
     }
 
     @Override
     public void endElement(String uri, String localName, String qName) throws SAXException {
         switch (qName) {
-            case COMMAND:
-                message.setCommand(elementValue.toString());
-                break;
-            case ORDER_STATUS_ID:
-                message.getOrderDTO().getOrder().setOrderStatusId(Integer.parseInt(elementValue.toString()));
-                break;
-            case CUSTOMER_NAME:
-                message.getOrderDTO().getOrder().setCustomerLastName(elementValue.toString());
-                break;
-            case CUSTOMER_PHONE:
-                message.getOrderDTO().getOrder().setCustomerPhone(elementValue.toString());
-                break;
-            case CUSTOMER_COMMENT:
-                message.getOrderDTO().getOrder().setCustomerComment(elementValue.toString());
-                break;
-            case ITEM:
-                lastOrderItem().setItemName(elementValue.toString());
-                break;
+            case COMMAND -> messageDTO.setCommand(elementValue.toString());
+            case ORDER_STATUS_ID ->
+                    messageDTO.getOrderDTO().getOrderEntity().setOrderStatusId(Integer.parseInt(elementValue.toString()));
+            case CUSTOMER_NAME ->
+                    messageDTO.getOrderDTO().getOrderEntity().setCustomerLastName(elementValue.toString());
+            case CUSTOMER_PHONE -> messageDTO.getOrderDTO().getOrderEntity().setCustomerPhone(elementValue.toString());
+            case CUSTOMER_COMMENT ->
+                    messageDTO.getOrderDTO().getOrderEntity().setCustomerComment(elementValue.toString());
+            case ITEM -> lastOrderItem().setItemName(elementValue.toString());
         }
     }
 
-    private OrderItem lastOrderItem() {
-        List<OrderItem> list = message.getOrderDTO().getOrderItems();
+    private OrderItemEntity lastOrderItem() {
+        List<OrderItemEntity> list = messageDTO.getOrderDTO().getOrderItemEntities();
         return list.get(list.size() - 1);
     }
 
-    public Message getMessage() {
-        return message;
+    public MessageDTO getMessage() {
+        return messageDTO;
     }
 }

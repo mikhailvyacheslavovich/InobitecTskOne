@@ -2,11 +2,9 @@ package ru.inobitec.taskone.servlets;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.xml.sax.SAXException;
 import ru.inobitec.taskone.dto.OrderDTO;
-import ru.inobitec.taskone.dto.OrderPatientDTO;
-import ru.inobitec.taskone.model.Message;
+import ru.inobitec.taskone.dto.MessageDTO;
 import ru.inobitec.taskone.service.OrderService;
 
 import javax.servlet.ServletConfig;
@@ -59,7 +57,7 @@ public class OrderServlet extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
             parser.parse(request.getInputStream(), orderServletHandler);
-            Message result = orderServletHandler.getMessage();
+            MessageDTO result = orderServletHandler.getMessage();
             orderService.addOrder(result.getOrderDTO());
             response.setContentType("text/html");
             response.getWriter().println("create successfully");
@@ -71,7 +69,7 @@ public class OrderServlet extends HttpServlet {
     public void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
             parser.parse(request.getInputStream(), orderServletHandler);
-            Message result = orderServletHandler.getMessage();
+            MessageDTO result = orderServletHandler.getMessage();
             Long id = Long.parseLong(request.getParameter("id"));
             orderService.updateOrder(result.getOrderDTO(), id);
             response.setContentType("text/html");

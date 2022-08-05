@@ -10,13 +10,14 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Order {
+public class OrderEntity {
     private Long id;
     private Integer orderStatusId;
     private String customerFirstName;
+    private String customerMiddleName;
     private String customerLastName;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @JsonFormat(locale="ru", timezone="GMT+3", pattern="dd-MM-yyyy")
+    @JsonFormat(locale = "ru", timezone = "GMT+3", pattern = "dd-MM-yyyy")
     private Date customerBirthday;
     private String customerPhone;
     private String customerComment;

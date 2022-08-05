@@ -1,7 +1,7 @@
 package ru.inobitec.taskone.filters;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import ru.inobitec.taskone.model.Session;
+import ru.inobitec.taskone.model.OrderSessionEntity;
 import ru.inobitec.taskone.service.SessionService;
 
 import javax.servlet.*;
@@ -28,11 +28,11 @@ public class OrderFilter implements Filter {
         if (session_id == null) {
             response.getWriter().println("Invalid session");
         } else {
-            Session session = sessionService.getSessionBySessionId(session_id);
-            if (session == null) {
+            OrderSessionEntity orderSessionEntity = sessionService.getSessionBySessionId(session_id);
+            if (orderSessionEntity == null) {
                 response.getWriter().println("Unknown session");
             } else {
-                if (checkExpiring(session)) {
+                if (checkExpiring(orderSessionEntity)) {
                     chain.doFilter(request, response);
                 } else {
                     response.getWriter().println("Session expired");
@@ -42,8 +42,8 @@ public class OrderFilter implements Filter {
     }
 
 
-    private boolean checkExpiring(Session session) {
-        return (session.getStartTime().getTime() + (session.getTimeoutMinutes() * 60 * 1000)) > new Date().getTime();
+    private boolean checkExpiring(OrderSessionEntity orderSessionEntity) {
+        return (orderSessionEntity.getStartTime().getTime() + (orderSessionEntity.getTimeoutMinutes() * 60 * 1000)) > new Date().getTime();
     }
 
     @Override

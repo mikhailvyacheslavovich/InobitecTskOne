@@ -1,11 +1,11 @@
 package ru.inobitec.taskone.repository;
 
 import org.apache.ibatis.annotations.Mapper;
-import ru.inobitec.taskone.model.Session;
+import ru.inobitec.taskone.model.OrderSessionEntity;
 
 @Mapper
 public interface SessionMapper {
 
-    Session getSessionBySessionId(String sessionId);
+    OrderSessionEntity getSessionBySessionId(String sessionId);
 
 }

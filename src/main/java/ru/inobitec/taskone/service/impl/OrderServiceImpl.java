@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import ru.inobitec.taskone.dto.OrderDTO;
 import ru.inobitec.taskone.dto.OrderPatientDTO;
 import ru.inobitec.taskone.service.PatientService;
-import ru.inobitec.taskone.model.Patient;
+import ru.inobitec.taskone.model.PatientEntity;
 import ru.inobitec.taskone.repository.OrderMapper;
 import ru.inobitec.taskone.service.OrderService;
 
@@ -29,17 +29,17 @@ public class OrderServiceImpl implements OrderService {
         OrderDTO order = orderMapper.getOrderById(id);
         //Patient cc = restClient.getPatientInfoByName(order.getOrder());
         //return new OrderPatientDTO(order, restClient.getPatientInfoByName(order.getOrder()));
-        return new OrderPatientDTO(order, new Patient());
+        return new OrderPatientDTO(order, new PatientEntity());
     }
 
     @Override
     public void addOrder(OrderDTO newOrder) {
-        if (patientService.getPatientInfoByName(newOrder.getOrder()) == null) {
-            patientService.addNewPatient(newOrder.getOrder());
+        if (patientService.getPatientInfoByName(newOrder.getOrderEntity()) == null) {
+            patientService.addNewPatient(newOrder.getOrderEntity());
         }
-        patientService.getPatientInfoByName(newOrder.getOrder());
-        orderMapper.addOrder(newOrder.getOrder());
-        orderMapper.addOrderItems(newOrder.getOrderItems(), newOrder.getOrder().getId());
+        patientService.getPatientInfoByName(newOrder.getOrderEntity());
+        orderMapper.addOrder(newOrder.getOrderEntity());
+        orderMapper.addOrderItems(newOrder.getOrderItemEntities(), newOrder.getOrderEntity().getId());
     }
 
     @Override
@@ -52,8 +52,8 @@ public class OrderServiceImpl implements OrderService {
         }
         */
 
-        orderMapper.updateOrder(orderUpdate.getOrder(), id);
-        orderMapper.updateOrderItems(orderUpdate.getOrderItems(), id);
+        orderMapper.updateOrder(orderUpdate.getOrderEntity(), id);
+        orderMapper.updateOrderItems(orderUpdate.getOrderItemEntities(), id);
     }
 
     @Override

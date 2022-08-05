@@ -2,22 +2,21 @@ package ru.inobitec.taskone.repository;
 
 import org.apache.ibatis.annotations.*;
 import ru.inobitec.taskone.dto.OrderDTO;
-import ru.inobitec.taskone.model.Order;
-import ru.inobitec.taskone.model.OrderItem;
+import ru.inobitec.taskone.model.OrderEntity;
+import ru.inobitec.taskone.model.OrderItemEntity;
 
 import java.util.List;
-import java.util.Optional;
 
 @Mapper
 public interface OrderMapper {
 
-    void addOrder(Order newOrder);
+    void addOrder(OrderEntity newOrderEntity);
 
-    void addOrderItems(List<OrderItem> items, Long orderId);
+    void addOrderItems(List<OrderItemEntity> items, Long orderId);
 
-    void updateOrder(Order order, Long id);
+    void updateOrder(OrderEntity orderEntity, Long id);
 
-    void updateOrderItems(List<OrderItem> items, Long id);
+    void updateOrderItems(List<OrderItemEntity> items, Long id);
 
     void deleteOrderById(Long id);
 
