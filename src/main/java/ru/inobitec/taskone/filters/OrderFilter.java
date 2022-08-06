@@ -1,6 +1,7 @@
 package ru.inobitec.taskone.filters;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import ru.inobitec.taskone.model.OrderSessionEntity;
 import ru.inobitec.taskone.service.SessionService;
 
@@ -14,6 +15,7 @@ import java.util.Date;
 @RequiredArgsConstructor
 public class OrderFilter implements Filter {
 
+    @Autowired
     SessionService sessionService;
 
     @Override

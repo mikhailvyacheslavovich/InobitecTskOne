@@ -4,14 +4,14 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="ru.inobitec.taskone.repository.OrderMapper">
     <resultMap id="Order" type="ru.inobitec.taskone.dto.OrderDTO">
-        <result property="newOrderEntity.id" column="id"/>
-        <result property="newOrderEntity.orderStatusId" column="ORDER_STATUS_ID"/>
-        <result property="newOrderEntity.customerFirstName" column="CUSTOMER_FIRST_NAME"/>
-        <result property="newOrderEntity.customerLastName" column="CUSTOMER_LAST_NAME"/>
-        <result property="newOrderEntity.customerBirthday" column="CUSTOMER_Birthday"/>
-        <result property="newOrderEntity.customerPhone" column="customer_phone"/>
-        <result property="newOrderEntity.customerComment" column="customer_comment"/>
-        <collection property="orderItems" javaType="ArrayList" resultMap="OrderItem"/>
+        <result property="orderEntity.id" column="id"/>
+        <result property="orderEntity.orderStatusId" column="ORDER_STATUS_ID"/>
+        <result property="orderEntity.customerFirstName" column="CUSTOMER_FIRST_NAME"/>
+        <result property="orderEntity.customerLastName" column="CUSTOMER_LAST_NAME"/>
+        <result property="orderEntity.customerBirthday" column="CUSTOMER_Birthday"/>
+        <result property="orderEntity.customerPhone" column="CUSTOMER_PHONE"/>
+        <result property="orderEntity.customerComment" column="CUSTOMER_COMMENT"/>
+        <collection property="orderItems" javaType="ArrayList" resultMap="OrderItem" columnPrefix=""/>
     </resultMap>
 
     <resultMap id="OrderItem" type="ru.inobitec.taskone.model.OrderItemEntity">

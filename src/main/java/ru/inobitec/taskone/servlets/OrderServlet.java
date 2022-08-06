@@ -1,6 +1,7 @@
 package ru.inobitec.taskone.servlets;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.xml.sax.SAXException;
 import ru.inobitec.taskone.dto.OrderDTO;
 import ru.inobitec.taskone.dto.MessageDTO;
@@ -20,7 +21,8 @@ import java.io.IOException;
 @WebServlet("/orderServlet")
 @RequiredArgsConstructor
 public class OrderServlet extends HttpServlet {
-    
+
+    @Autowired
     OrderService orderService;
 
     OrderServletHandler orderServletHandler;
