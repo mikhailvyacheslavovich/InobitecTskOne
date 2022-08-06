@@ -8,6 +8,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import ru.inobitec.taskone.model.OrderEntity;
 import ru.inobitec.taskone.model.PatientEntity;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,7 +28,6 @@ public class PatientService {
                 .queryParam("firstName", orderEntity.getCustomerFirstName())
                 .queryParam("lastName", orderEntity.getCustomerLastName())
                 .queryParam("birthday", orderEntity.getCustomerBirthday());
-
         ResponseEntity<PatientEntity> response = restTemplate.exchange(builder.toUriString(),
                 HttpMethod.GET, entity, PatientEntity.class);
 

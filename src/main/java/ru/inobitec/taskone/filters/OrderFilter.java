@@ -25,7 +25,7 @@ public class OrderFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        String session_id = request.getParameter("session_id");
+        String session_id = request.getParameter("SESSION-ID");
         if (session_id == null) {
             response.getWriter().println("Invalid session");
         } else {

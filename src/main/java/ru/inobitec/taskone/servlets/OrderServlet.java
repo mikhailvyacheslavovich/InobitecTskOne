@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.xml.sax.SAXException;
 import ru.inobitec.taskone.dto.OrderDTO;
 import ru.inobitec.taskone.dto.MessageDTO;
+import ru.inobitec.taskone.dto.OrderPatientDTO;
 import ru.inobitec.taskone.service.OrderService;
 
 import javax.servlet.ServletConfig;
@@ -42,12 +43,11 @@ public class OrderServlet extends HttpServlet {
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            parser.parse(request.getInputStream(), orderServletHandler);
             Long id = Long.parseLong(request.getParameter("id"));
-            OrderDTO order = orderService.getOrderById(id).getOrder();
+            OrderPatientDTO order = orderService.getOrderById(id);
             response.setContentType("text/html");
             response.getWriter().println(order.toString());
-        } catch (SAXException | IOException ex) {
+        } catch (IOException ex) {
             ex.printStackTrace();
         }
     }
