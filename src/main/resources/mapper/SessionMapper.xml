@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="ru.inobitec.taskone.repository.SessionMapper">
+<mapper namespace="ru.inobitec.order.repository.SessionMapper">
 
-    <resultMap id="Session" type="ru.inobitec.taskone.model.OrderSessionEntity">
+    <resultMap id="Session" type="ru.inobitec.order.model.OrderSessionEntity">
         <result property="id" column="id"/>
         <result property="sessionId" column="SESSION_ID"/>
         <result property="timeoutMinutes" column="TIMEOUT_MINUTES"/>
