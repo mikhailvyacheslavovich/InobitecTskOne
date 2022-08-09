@@ -3,7 +3,6 @@ package ru.inobitec.taskone.filters;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import ru.inobitec.taskone.model.OrderSessionEntity;
-import ru.inobitec.taskone.service.SessionService;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
@@ -16,8 +15,7 @@ import java.util.Date;
 public class OrderFilter implements Filter {
 
     @Autowired
-    SessionService sessionService;
-
+    SessionCache sessionCache;
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
 
@@ -25,11 +23,11 @@ public class OrderFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        String session_id = request.getParameter("SESSION-ID");
-        if (session_id == null) {
+        String sessionId = request.getParameter("SESSION-ID");
+        if (sessionId == null) {
             response.getWriter().println("Invalid session");
         } else {
-            OrderSessionEntity orderSessionEntity = sessionService.getSessionBySessionId(session_id);
+            OrderSessionEntity orderSessionEntity = sessionCache.getSessions().get(sessionId);
             if (orderSessionEntity == null) {
                 response.getWriter().println("Unknown session");
             } else {

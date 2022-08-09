@@ -19,4 +19,10 @@
         WHERE s.session_id = #{sessionId}
     </select>
 
+    <select id="getAllSessions" resultMap="Session">
+        SELECT s.session_id,
+               s.start_time,
+               s.timeout_minutes
+        FROM  sessions s;
+    </select>
 </mapper>

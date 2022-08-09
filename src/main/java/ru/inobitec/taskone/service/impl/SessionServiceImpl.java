@@ -6,6 +6,8 @@ import ru.inobitec.taskone.model.OrderSessionEntity;
 import ru.inobitec.taskone.repository.SessionMapper;
 import ru.inobitec.taskone.service.SessionService;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class SessionServiceImpl implements SessionService {
@@ -15,5 +17,10 @@ public class SessionServiceImpl implements SessionService {
     @Override
     public OrderSessionEntity getSessionBySessionId(String sessionId) {
         return sessionMapper.getSessionBySessionId(sessionId);
+    }
+
+    @Override
+    public List<OrderSessionEntity> getAllSessions() {
+        return sessionMapper.getAllSessions();
     }
 }
