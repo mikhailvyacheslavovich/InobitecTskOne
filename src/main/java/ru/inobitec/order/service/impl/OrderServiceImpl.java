@@ -20,12 +20,7 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
 
     @Override
-    public List<OrderDTO> getAllOrders() {
-        return orderRepository.getAllOrders();
-    }
-
-    @Override
-    public OrderDTO getOrderById(Long id) {
+    public OrderDTO getOrderById(Long id) throws RuntimeException {
         OrderDTO order = orderRepository.getOrderById(id);
         Patient patient = patientService.getPatientById(order.getPatientId());
         order.setPatient(patient);
@@ -33,7 +28,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void addOrder(OrderDTO order) {
+    public void addOrder(OrderDTO order) throws RuntimeException {
         Long patientId = null;
         if (patientService.getPatientByName(order.getFirstName(), order.getLastName(), order.getBirthday()) == null) {
             patientId = patientService.addPatient(order);
@@ -43,16 +38,16 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void updateOrder(OrderDTO order, Long id) {
-        OrderDTO orderDTO = orderRepository.getOrderById(id);
+    public void updateOrder(OrderDTO order) throws RuntimeException {
+        OrderDTO orderDTO = orderRepository.getOrderById(order.getId());
         Patient patient = patientService.getPatientById(orderDTO.getPatientId());
         patient.setPhone(order.getCustomerPhone());
         patientService.updatePatient(patient);
-        orderRepository.updateOrder(order, id);
+        orderRepository.updateOrder(order);
     }
 
     @Override
-    public void deleteOrderById(Long id) {
+    public void deleteOrderById(Long id) throws RuntimeException {
         orderRepository.deleteOrderById(id);
     }
 }

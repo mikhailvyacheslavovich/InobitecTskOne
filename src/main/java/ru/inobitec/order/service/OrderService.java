@@ -8,9 +8,7 @@ import java.util.List;
 public interface OrderService {
     void addOrder(OrderDTO newOrder);
 
-    void updateOrder(OrderDTO orderUpdate, Long idOfOrder);
-
-    List<OrderDTO> getAllOrders();
+    void updateOrder(OrderDTO order);
 
     OrderDTO getOrderById(Long id);
 

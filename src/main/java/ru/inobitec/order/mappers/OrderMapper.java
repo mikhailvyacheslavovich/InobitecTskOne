@@ -16,9 +16,9 @@ public interface OrderMapper {
 
     void addOrderItem(OrderItemEntity item, Long orderId);
 
-    void updateOrder(OrderEntity order, Long id);
+    void updateOrder(OrderEntity order);
 
-    void updateOrderItems(List<OrderItemEntity> items, Long id);
+    void updateOrderItems(List<OrderItemEntity> items);
 
     void deleteOrderById(Long id);
 
@@ -26,5 +26,4 @@ public interface OrderMapper {
 
     OrderEntity getOrderById(Long id);
 
-    List<OrderDTO> getAllOrders();
 }

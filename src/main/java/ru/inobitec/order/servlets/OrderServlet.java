@@ -69,7 +69,7 @@ public class OrderServlet extends HttpServlet {
             parser.parse(request.getInputStream(), orderServletHandler);
             MessageDTO result = orderServletHandler.getMessage();
             Long id = Long.parseLong(request.getParameter("id"));
-            orderService.updateOrder(result.getOrderDTO(), id);
+            orderService.updateOrder(result.getOrderDTO());
             response.setContentType("text/html");
             response.getWriter().println("update successfully");
         } catch (SAXException | IOException ex) {

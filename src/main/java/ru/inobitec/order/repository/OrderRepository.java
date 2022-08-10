@@ -9,9 +9,7 @@ public interface OrderRepository {
 
     void addOrder(OrderDTO order);
 
-    void updateOrder(OrderDTO order, Long id);
+    void updateOrder(OrderDTO order);
 
     void deleteOrderById(Long id);
-
-    List<OrderDTO> getAllOrders();
 }
