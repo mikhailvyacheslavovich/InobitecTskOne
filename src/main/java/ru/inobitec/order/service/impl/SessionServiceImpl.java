@@ -3,7 +3,7 @@ package ru.inobitec.order.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.inobitec.order.model.OrderSessionEntity;
-import ru.inobitec.order.repository.SessionMapper;
+import ru.inobitec.order.mappers.SessionMapper;
 import ru.inobitec.order.service.SessionService;
 
 import java.util.List;

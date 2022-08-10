@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="ru.inobitec.order.repository.OrderMapper">
+<mapper namespace="ru.inobitec.order.mappers.OrderMapper">
     <resultMap id="Order" type="ru.inobitec.order.model.OrderEntity">
         <result property="id" column="id"/>
         <result property="orderStatusId" column="ORDER_STATUS_ID"/>
@@ -55,13 +55,20 @@
         VALUES (#{id}, #{orderStatusId}, #{customerName}, #{customerPhone}, #{customerComment}, #{patientId});
     </insert>
 
-
+    <!--
     <insert id="addOrderItems" keyColumn="id" keyProperty="id" parameterType="ru.inobitec.order.model.OrderItemEntity">
         insert into order_item(order_id, item_name)
         values
         <foreach collection="items" item="item" open="(" separator="),(" close=")">
             #{orderId}, #{item.itemName}
         </foreach>
+    </insert>
+    -->
+    <insert id="addOrderItem" keyColumn="id" keyProperty="id" parameterType="ru.inobitec.order.model.OrderItemEntity">
+        <selectKey keyProperty="id" keyColumn="id" resultType="long" order="BEFORE">SELECT nextval('ORDER_ITEM_SEQ')
+        </selectKey>
+        insert into order_item(id, order_id, item_name)
+            values (#{id}, #{orderId}, #{item.itemName});
     </insert>
 
     <update id="updateOrder" parameterType="ru.inobitec.order.model.OrderEntity">

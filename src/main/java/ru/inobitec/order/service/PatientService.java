@@ -28,10 +28,15 @@ public class PatientService {
                 .queryParam("firstName", firstName)
                 .queryParam("lastName", lastName)
                 .queryParam("birthday", birthday);
-        ResponseEntity<Patient> response = restTemplate.exchange(builder.toUriString(),
-                HttpMethod.GET, entity, Patient.class);
 
-        return response.getBody();
+        try {
+            ResponseEntity<Patient> response = restTemplate.exchange(builder.toUriString(),
+                    HttpMethod.GET, entity, Patient.class);
+            return response.getBody();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
     }
 
     public Patient getPatientById(Long id) {
@@ -39,8 +44,15 @@ public class PatientService {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<String> entity = new HttpEntity<>(headers);
-        ResponseEntity<Patient> response = restTemplate.exchange(URL + "patient/" + id, HttpMethod.GET, entity, Patient.class);
-        return response.getBody();
+
+        try {
+            ResponseEntity<Patient> response = restTemplate
+                    .exchange(URL + "patient/" + id, HttpMethod.GET, entity, Patient.class);
+            return response.getBody();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
     }
 
     public Long addPatient(OrderDTO order) {
@@ -54,8 +66,14 @@ public class PatientService {
         map.put("phone", order.getCustomerPhone());
         map.put("birthday", order.getBirthday());
         HttpEntity<Map<String, Object>> entity = new HttpEntity<>(map, headers);
-        ResponseEntity<String> response = restTemplate.postForEntity(URL + "patient", entity, String.class);
-        return Long.parseLong(response.getBody());
+
+        try{
+            ResponseEntity<String> response = restTemplate.postForEntity(URL + "patient", entity, String.class);
+            return Long.parseLong(response.getBody());
+        }catch(Exception ex){
+            ex.printStackTrace();
+            return -1l;
+        }
     }
 
     public void updatePatient(Patient patient) {
@@ -63,6 +81,10 @@ public class PatientService {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<Patient> requestBody = new HttpEntity<>(patient, headers);
-        restTemplate.put(URL + "updatePatient/" + patient.getId(), requestBody);
+        try {
+            restTemplate.put(URL + "updatePatient/" + patient.getId(), requestBody);
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
     }
 }

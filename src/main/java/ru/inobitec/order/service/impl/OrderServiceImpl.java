@@ -5,9 +5,8 @@ import org.springframework.stereotype.Service;
 
 import ru.inobitec.order.dto.OrderDTO;
 import ru.inobitec.order.dto.Patient;
-import ru.inobitec.order.model.OrderEntity;
+import ru.inobitec.order.repository.OrderRepository;
 import ru.inobitec.order.service.PatientService;
-import ru.inobitec.order.repository.OrderMapper;
 import ru.inobitec.order.service.OrderService;
 
 import java.util.List;
@@ -16,18 +15,18 @@ import java.util.List;
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
 
-    private final OrderMapper orderMapper;
-
     private final PatientService patientService;
+
+    private final OrderRepository orderRepository;
 
     @Override
     public List<OrderDTO> getAllOrders() {
-        return orderMapper.getAllOrders();
+        return orderRepository.getAllOrders();
     }
 
     @Override
     public OrderDTO getOrderById(Long id) {
-        OrderDTO order = orderMapper.getOrderById(id).toDTO();
+        OrderDTO order = orderRepository.getOrderById(id);
         Patient patient = patientService.getPatientById(order.getPatientId());
         order.setPatient(patient);
         return order;
@@ -40,26 +39,20 @@ public class OrderServiceImpl implements OrderService {
             patientId = patientService.addPatient(order);
         }
         order.setPatientId(patientId);
-        OrderEntity orderEntity = order.toEntity();
-
-        orderMapper.addOrder(orderEntity);
-        orderMapper.addOrderItems(order.getOrderItems(), orderEntity.getId());
+        orderRepository.addOrder(order);
     }
 
     @Override
     public void updateOrder(OrderDTO order, Long id) {
-        OrderEntity orderEntity = orderMapper.getOrderById(id);
-
-        Patient patient = patientService.getPatientById(orderEntity.getPatientId());
+        OrderDTO orderDTO = orderRepository.getOrderById(id);
+        Patient patient = patientService.getPatientById(orderDTO.getPatientId());
         patient.setPhone(order.getCustomerPhone());
         patientService.updatePatient(patient);
-        orderMapper.updateOrder(order.toEntity(), id);
-        orderMapper.updateOrderItems(order.getOrderItems(), id);
+        orderRepository.updateOrder(order, id);
     }
 
     @Override
     public void deleteOrderById(Long id) {
-        orderMapper.deleteOrderItemsById(id);
-        orderMapper.deleteOrderById(id);
+        orderRepository.deleteOrderById(id);
     }
 }

@@ -1,4 +1,4 @@
-package ru.inobitec.order.repository;
+package ru.inobitec.order.mappers;
 
 import org.apache.ibatis.annotations.*;
 import ru.inobitec.order.dto.OrderDTO;
@@ -13,6 +13,8 @@ public interface OrderMapper {
     void addOrder(OrderEntity newOrder);
 
     void addOrderItems(List<OrderItemEntity> items, Long orderId);
+
+    void addOrderItem(OrderItemEntity item, Long orderId);
 
     void updateOrder(OrderEntity order, Long id);
 
