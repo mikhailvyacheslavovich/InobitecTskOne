@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.xml.sax.SAXException;
 import ru.inobitec.order.dto.MessageDTO;
-import ru.inobitec.order.dto.OrderPatientDTO;
+import ru.inobitec.order.dto.OrderDTO;
 import ru.inobitec.order.service.OrderService;
 
 import javax.servlet.ServletConfig;
@@ -43,12 +43,13 @@ public class OrderServlet extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
             Long id = Long.parseLong(request.getParameter("id"));
-            OrderPatientDTO order = orderService.getOrderById(id);
+            OrderDTO order = orderService.getOrderById(id);
             response.setContentType("text/html");
             response.getWriter().println(order.toString());
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+
     }
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

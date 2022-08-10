@@ -10,11 +10,11 @@ import java.util.List;
 @Mapper
 public interface OrderMapper {
 
-    void addOrder(OrderEntity newOrderEntity);
+    void addOrder(OrderEntity newOrder);
 
     void addOrderItems(List<OrderItemEntity> items, Long orderId);
 
-    void updateOrder(OrderEntity orderEntity, Long id);
+    void updateOrder(OrderEntity order, Long id);
 
     void updateOrderItems(List<OrderItemEntity> items, Long id);
 
@@ -22,7 +22,7 @@ public interface OrderMapper {
 
     void deleteOrderItemsById(Long id);
 
-    OrderDTO getOrderById(Long id);
+    OrderEntity getOrderById(Long id);
 
     List<OrderDTO> getAllOrders();
 }

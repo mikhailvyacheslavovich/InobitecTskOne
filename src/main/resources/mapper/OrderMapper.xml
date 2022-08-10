@@ -3,29 +3,27 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="ru.inobitec.order.repository.OrderMapper">
-    <resultMap id="Order" type="ru.inobitec.order.dto.OrderDTO">
-        <result property="orderEntity.id" column="id"/>
-        <result property="orderEntity.orderStatusId" column="ORDER_STATUS_ID"/>
-        <result property="orderEntity.customerFirstName" column="CUSTOMER_FIRST_NAME"/>
-        <result property="orderEntity.customerLastName" column="CUSTOMER_LAST_NAME"/>
-        <result property="orderEntity.customerBirthday" column="CUSTOMER_Birthday"/>
-        <result property="orderEntity.customerPhone" column="CUSTOMER_PHONE"/>
-        <result property="orderEntity.customerComment" column="CUSTOMER_COMMENT"/>
+    <resultMap id="Order" type="ru.inobitec.order.model.OrderEntity">
+        <result property="id" column="id"/>
+        <result property="orderStatusId" column="ORDER_STATUS_ID"/>
+        <result property="patientId" column="patient_id"/>
+        <result property="customerName" column="CUSTOMER_NAME"/>
+        <result property="customerPhone" column="CUSTOMER_PHONE"/>
+        <result property="customerComment" column="CUSTOMER_COMMENT"/>
         <collection property="orderItems" javaType="ArrayList" resultMap="OrderItem" columnPrefix=""/>
     </resultMap>
 
     <resultMap id="OrderItem" type="ru.inobitec.order.model.OrderItemEntity">
         <result property="id" column="id"/>
-        <result property="orderId" column="order_id"/>
-        <result property="itemName" column="item_name"/>
+        <result property="orderId" column="ORDER_ID"/>
+        <result property="itemName" column="ITEM_NAME"/>
     </resultMap>
 
     <select id="getOrderById" parameterType="java.lang.Long" resultMap="Order">
         SELECT o.id,
                o.order_status_id,
-               o.customer_first_name,
-               o.customer_last_name,
-               o.customer_birthday,
+               o.patient_id,
+               o.customer_name,
                o.customer_phone,
                o.customer_comment,
                i.id,
@@ -39,7 +37,7 @@
     <select id="getAllOrders" parameterType="java.lang.Long" resultMap="Order">
         SELECT o.id,
                o.order_status_id,
-               o.customer_last_name,
+               o.customer_name,
                o.customer_phone,
                o.customer_comment,
                i.id,
@@ -50,13 +48,11 @@
     </select>
 
 
-    <insert id="addOrder" parameterType="ru.inobitec.order.model.OrderEntity">
+    <insert id="addOrder" parameterType="ru.inobitec.order.model.OrderEntity" useGeneratedKeys="true">
         <selectKey keyProperty="id" keyColumn="id" resultType="long" order="BEFORE">SELECT nextval('ORDER_SEQ')
         </selectKey>
-        INSERT INTO "order" (id, order_status_id, customer_first_name, customer_last_name,
-        customer_phone, customer_birthday, customer_comment)
-        VALUES (#{id}, #{orderStatusId}, #{customerFirstName}, #{customerLastName}, #{customerPhone},
-        #{customerBirthday}, #{customerComment});
+        INSERT INTO "order" (id, order_status_id, customer_name, customer_phone, customer_comment, patient_id)
+        VALUES (#{id}, #{orderStatusId}, #{customerName}, #{customerPhone}, #{customerComment}, #{patientId});
     </insert>
 
 
@@ -70,12 +66,10 @@
 
     <update id="updateOrder" parameterType="ru.inobitec.order.model.OrderEntity">
         update "order"
-        set order_status_id  = #{orderEntity.orderStatusId},
-            customer_first_name = #{orderEntity.customerFirstName},
-            customer_last_name  = #{orderEntity.customerLastName},
-            customer_birthday   = #{orderEntity.customerBirthday},
-            customer_phone   = #{orderEntity.customerPhone},
-            customer_comment = #{orderEntity.customerComment}
+        set order_status_id  = #{order.orderStatusId},
+            customer_name    = #{order.customerName},
+            customer_phone   = #{order.customerPhone},
+            customer_comment = #{order.customerComment}
         where id = #{id};
     </update>
 

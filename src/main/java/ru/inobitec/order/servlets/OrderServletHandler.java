@@ -4,7 +4,6 @@ import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
 import ru.inobitec.order.dto.OrderDTO;
 import ru.inobitec.order.dto.MessageDTO;
-import ru.inobitec.order.model.OrderEntity;
 import ru.inobitec.order.model.OrderItemEntity;
 
 import java.text.ParseException;
@@ -18,13 +17,15 @@ public class OrderServletHandler extends DefaultHandler {
 
     private static final String ORDER_STATUS_ID = "orderStatusId";
 
-    private static final String CUSTOMER_LAST_NAME = "customerLastName";
+    private static final String LAST_NAME = "lastName";
 
-    private static final String CUSTOMER_FIRST_NAME = "customerFirstName";
+    private static final String FIRST_NAME = "firstName";
 
     private static final String CUSTOMER_PHONE = "customerPhone";
 
     private static final String CUSTOMER_COMMENT = "customerComment";
+
+    private static final String CUSTOMER_NAME = "customerName";
 
     private static final String ITEMS = "items";
 
@@ -34,7 +35,7 @@ public class OrderServletHandler extends DefaultHandler {
 
     private static final String BODY = "body";
 
-    private static final String BIRTHDAY = "customerBirthdate";
+    private static final String BIRTHDAY = "birthday";
 
     private StringBuilder elementValue;
 
@@ -56,12 +57,14 @@ public class OrderServletHandler extends DefaultHandler {
 
     @Override
     public void startElement(String uri, String lName, String qName, Attributes attr) {
+
         switch (qName) {
             case COMMAND -> elementValue = new StringBuilder();
             case BODY -> messageDTO.setOrderDTO(new OrderDTO());
             case ORDER_STATUS_ID -> elementValue = new StringBuilder();
-            case CUSTOMER_FIRST_NAME -> elementValue = new StringBuilder();
-            case CUSTOMER_LAST_NAME -> elementValue = new StringBuilder();
+            case FIRST_NAME -> elementValue = new StringBuilder();
+            case LAST_NAME -> elementValue = new StringBuilder();
+            case CUSTOMER_NAME -> elementValue = new StringBuilder();
             case CUSTOMER_PHONE -> elementValue = new StringBuilder();
             case CUSTOMER_COMMENT -> elementValue = new StringBuilder();
             case BIRTHDAY -> elementValue = new StringBuilder();
@@ -70,31 +73,28 @@ public class OrderServletHandler extends DefaultHandler {
                 messageDTO.getOrderDTO().getOrderItems().add(new OrderItemEntity());
                 elementValue = new StringBuilder();
             }
-            case ORDER -> messageDTO.getOrderDTO().setOrderEntity(new OrderEntity());
         }
+
     }
 
     @Override
     public void endElement(String uri, String localName, String qName) {
         switch (qName) {
             case COMMAND -> messageDTO.setCommand(elementValue.toString());
-            case ORDER_STATUS_ID ->
-                    messageDTO.getOrderDTO().getOrderEntity().setOrderStatusId(Integer.parseInt(elementValue.toString()));
+            case ORDER_STATUS_ID -> messageDTO.getOrderDTO().setOrderStatusId(Long.parseLong(elementValue.toString()));
             case BIRTHDAY -> {
                 try {
                     Date birthdate = parseDate(elementValue.toString());
-                    messageDTO.getOrderDTO().getOrderEntity().setCustomerBirthday(birthdate);
+                    messageDTO.getOrderDTO().setBirthday(birthdate);
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
             }
-            case CUSTOMER_LAST_NAME ->
-                    messageDTO.getOrderDTO().getOrderEntity().setCustomerLastName(elementValue.toString());
-            case CUSTOMER_FIRST_NAME ->
-                    messageDTO.getOrderDTO().getOrderEntity().setCustomerFirstName(elementValue.toString());
-            case CUSTOMER_PHONE -> messageDTO.getOrderDTO().getOrderEntity().setCustomerPhone(elementValue.toString());
-            case CUSTOMER_COMMENT ->
-                    messageDTO.getOrderDTO().getOrderEntity().setCustomerComment(elementValue.toString());
+            case LAST_NAME -> messageDTO.getOrderDTO().setLastName(elementValue.toString());
+            case CUSTOMER_NAME -> messageDTO.getOrderDTO().setCustomerName(elementValue.toString());
+            case FIRST_NAME -> messageDTO.getOrderDTO().setFirstName(elementValue.toString());
+            case CUSTOMER_PHONE -> messageDTO.getOrderDTO().setCustomerPhone(elementValue.toString());
+            case CUSTOMER_COMMENT -> messageDTO.getOrderDTO().setCustomerComment(elementValue.toString());
             case ITEM -> lastOrderItem().setItemName(elementValue.toString());
         }
     }
@@ -109,7 +109,7 @@ public class OrderServletHandler extends DefaultHandler {
     }
 
     private Date parseDate(String stringDate) throws ParseException {
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
         return formatter.parse(stringDate);
     }
 }

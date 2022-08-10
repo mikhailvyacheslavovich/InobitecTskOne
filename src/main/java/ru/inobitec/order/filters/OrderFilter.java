@@ -16,6 +16,7 @@ public class OrderFilter implements Filter {
 
     @Autowired
     SessionCache sessionCache;
+
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
 

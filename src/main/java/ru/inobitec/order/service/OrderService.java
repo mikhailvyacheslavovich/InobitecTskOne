@@ -1,7 +1,7 @@
 package ru.inobitec.order.service;
 
 import ru.inobitec.order.dto.OrderDTO;
-import ru.inobitec.order.dto.OrderPatientDTO;
+
 
 import java.util.List;
 
@@ -12,7 +12,7 @@ public interface OrderService {
 
     List<OrderDTO> getAllOrders();
 
-    OrderPatientDTO getOrderById(Long id);
+    OrderDTO getOrderById(Long id);
 
     void deleteOrderById(Long id);
 }

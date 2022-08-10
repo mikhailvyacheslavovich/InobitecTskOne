@@ -1,24 +1,30 @@
 package ru.inobitec.order.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
-import org.springframework.format.annotation.DateTimeFormat;
+import ru.inobitec.order.dto.OrderDTO;
 
-import java.util.Date;
-
+import java.util.List;
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class OrderEntity {
     private Long id;
-    private Integer orderStatusId;
-    private String customerFirstName;
-    private String customerMiddleName;
-    private String customerLastName;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @JsonFormat(locale = "ru", timezone = "GMT+3", pattern = "dd-MM-yyyy")
-    private Date customerBirthday;
+    private Long orderStatusId;
+    private Long patientId;
+    private String customerName;
     private String customerPhone;
     private String customerComment;
+    private List<OrderItemEntity> orderItems;
+
+    public OrderDTO toDTO() {
+        OrderDTO orderDTO = new OrderDTO();
+        orderDTO.setOrderItems(getOrderItems());
+        orderDTO.setCustomerComment(getCustomerComment());
+        orderDTO.setCustomerPhone(getCustomerPhone());
+        orderDTO.setCustomerName(getCustomerName());
+        orderDTO.setOrderStatusId(getOrderStatusId());
+        orderDTO.setId(getId());
+        orderDTO.setPatientId(getPatientId());
+        return orderDTO;
+    }
 }

@@ -4,9 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import ru.inobitec.order.dto.OrderDTO;
-import ru.inobitec.order.dto.OrderPatientDTO;
+import ru.inobitec.order.dto.Patient;
+import ru.inobitec.order.model.OrderEntity;
 import ru.inobitec.order.service.PatientService;
-import ru.inobitec.order.model.PatientEntity;
 import ru.inobitec.order.repository.OrderMapper;
 import ru.inobitec.order.service.OrderService;
 
@@ -26,30 +26,35 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderPatientDTO getOrderById(Long id) {
-        OrderDTO order = orderMapper.getOrderById(id);
-        return new OrderPatientDTO(order, patientService.getPatientInfoByName(order.getOrderEntity()));
+    public OrderDTO getOrderById(Long id) {
+        OrderDTO order = orderMapper.getOrderById(id).toDTO();
+        Patient patient = patientService.getPatientById(order.getPatientId());
+        order.setPatient(patient);
+        return order;
     }
 
     @Override
-    public void addOrder(OrderDTO newOrder) {
-        if (patientService.getPatientInfoByName(newOrder.getOrderEntity()) == null) {
-            patientService.addNewPatient(newOrder.getOrderEntity());
+    public void addOrder(OrderDTO order) {
+        Long patientId = null;
+        if (patientService.getPatientByName(order.getFirstName(), order.getLastName(), order.getBirthday()) == null) {
+            patientId = patientService.addPatient(order);
         }
-        patientService.getPatientInfoByName(newOrder.getOrderEntity());
-        orderMapper.addOrder(newOrder.getOrderEntity());
-        orderMapper.addOrderItems(newOrder.getOrderItems(), newOrder.getOrderEntity().getId());
+        order.setPatientId(patientId);
+        OrderEntity orderEntity = order.toEntity();
+
+        orderMapper.addOrder(orderEntity);
+        orderMapper.addOrderItems(order.getOrderItems(), orderEntity.getId());
     }
 
     @Override
-    public void updateOrder(OrderDTO orderUpdate, Long id) {
-        PatientEntity patient = patientService.getPatientInfoByName(orderUpdate.getOrderEntity());
-        if (orderUpdate.orderPatientEquals(patient)) {
-            patient.setPhone(orderUpdate.getOrderEntity().getCustomerPhone());
-            patientService.updatePatient(patient);
-        }
-        orderMapper.updateOrder(orderUpdate.getOrderEntity(), id);
-        orderMapper.updateOrderItems(orderUpdate.getOrderItems(), id);
+    public void updateOrder(OrderDTO order, Long id) {
+        OrderEntity orderEntity = orderMapper.getOrderById(id);
+
+        Patient patient = patientService.getPatientById(orderEntity.getPatientId());
+        patient.setPhone(order.getCustomerPhone());
+        patientService.updatePatient(patient);
+        orderMapper.updateOrder(order.toEntity(), id);
+        orderMapper.updateOrderItems(order.getOrderItems(), id);
     }
 
     @Override
