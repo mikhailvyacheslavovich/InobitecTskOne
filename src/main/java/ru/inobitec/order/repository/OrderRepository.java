@@ -1,15 +1,14 @@
 package ru.inobitec.order.repository;
 
 import ru.inobitec.order.dto.OrderDTO;
-
-import java.util.List;
+import ru.inobitec.order.model.OrderEntity;
 
 public interface OrderRepository {
     OrderDTO getOrderById(Long id);
 
-    void addOrder(OrderDTO order);
+    OrderEntity addOrder(OrderDTO order);
 
-    void updateOrder(OrderDTO order);
+    OrderEntity updateOrder(OrderDTO order);
 
     void deleteOrderById(Long id);
 }

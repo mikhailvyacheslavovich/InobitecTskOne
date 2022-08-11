@@ -41,7 +41,7 @@
         VALUES (#{id}, #{orderStatusId}, #{customerName}, #{customerPhone}, #{customerComment}, #{patientId});
     </insert>
 
-    <insert id="addOrderItem" keyColumn="id" keyProperty="id" parameterType="ru.inobitec.order.model.OrderItemEntity">
+    <insert id="addOrderItem" keyColumn="id" keyProperty="id" parameterType="ru.inobitec.order.model.OrderItemEntity" useGeneratedKeys="true">
         <selectKey keyProperty="id" keyColumn="id" resultType="long" order="BEFORE">SELECT nextval('ORDER_ITEM_SEQ')
         </selectKey>
         insert into order_item(id, order_id, item_name)
@@ -50,11 +50,11 @@
 
     <update id="updateOrder" parameterType="ru.inobitec.order.model.OrderEntity">
         update "order"
-        set order_status_id  = #{order.orderStatusId},
-            customer_name    = #{order.customerName},
-            customer_phone   = #{order.customerPhone},
-            customer_comment = #{order.customerComment}
-        where id = #{order.id};
+        set order_status_id  = #{orderStatusId},
+            customer_name    = #{customerName},
+            customer_phone   = #{customerPhone},
+            customer_comment = #{customerComment}
+        where id = #{id};
     </update>
 
     <update id="updateOrderItems" parameterType="ru.inobitec.order.model.OrderItemEntity">

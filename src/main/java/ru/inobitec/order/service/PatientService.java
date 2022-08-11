@@ -82,7 +82,7 @@ public class PatientService {
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<Patient> requestBody = new HttpEntity<>(patient, headers);
         try {
-            restTemplate.put(URL + "updatePatient/" + patient.getId(), requestBody);
+            restTemplate.put(URL + "patient", requestBody);
         }catch(Exception ex){
             ex.printStackTrace();
         }

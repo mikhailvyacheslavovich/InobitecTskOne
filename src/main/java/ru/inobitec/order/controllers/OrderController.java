@@ -33,21 +33,21 @@ public class OrderController {
     public ResponseEntity<String> addOrder(@RequestBody OrderDTO order) {
         try {
             orderService.addOrder(order);
-            return new ResponseEntity<>("new order was created successfully", HttpStatus.OK);
+            return new ResponseEntity<>("Order was created successfully", HttpStatus.OK);
         } catch (RuntimeException ex) {
-            return new ResponseEntity<>("error while creating order " + ex.getCause(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("Error while creating order " + ex.getCause(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @ApiOperation(value = "Изменение ордера",
             notes = "также обновляется информация в patient")
-    @PutMapping("/order/{id}")
+    @PutMapping("/order")
     public ResponseEntity<String> updateOrder(@RequestBody OrderDTO order) {
         try {
             orderService.updateOrder(order);
-            return new ResponseEntity<>("order has been updated successfully", HttpStatus.OK);
+            return new ResponseEntity<>("Order has been updated successfully", HttpStatus.OK);
         } catch (RuntimeException ex) {
-            return new ResponseEntity<>("error while updating order " + ex.getCause(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("Error while updating order " + ex.getCause(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -57,9 +57,9 @@ public class OrderController {
     public ResponseEntity<String> deleteOrderById(@PathVariable("id") Long id) {
         try {
             orderService.deleteOrderById(id);
-            return new ResponseEntity<>("order deleted successfully", HttpStatus.OK);
+            return new ResponseEntity<>("Order deleted successfully", HttpStatus.OK);
         } catch (RuntimeException ex) {
-            return new ResponseEntity<>("error while deleting order " + ex.getCause(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("Error while deleting order " + ex.getCause(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

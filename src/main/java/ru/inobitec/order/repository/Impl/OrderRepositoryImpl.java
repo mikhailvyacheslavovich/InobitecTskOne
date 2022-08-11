@@ -23,20 +23,23 @@ public class OrderRepositoryImpl implements OrderRepository {
 
     @Override
     @Transactional
-    public void addOrder(OrderDTO order) throws RuntimeException {
+    public OrderEntity addOrder(OrderDTO order) throws RuntimeException {
         OrderEntity ord = order.toEntity();
         orderMapper.addOrder(ord);
 
         for (OrderItemEntity item : order.getOrderItems()) {
             orderMapper.addOrderItem(item, ord.getId());
         }
+        return ord;
     }
 
     @Override
     @Transactional
-    public void updateOrder(OrderDTO order) throws RuntimeException {
-        orderMapper.updateOrder(order.toEntity());
-        orderMapper.updateOrderItems(order.getOrderItems());
+    public OrderEntity updateOrder(OrderDTO order) throws RuntimeException {
+        OrderEntity orderEntity = order.toEntity();
+        orderMapper.updateOrder(orderEntity);
+        orderMapper.updateOrderItems(orderEntity.getOrderItems());
+        return orderEntity;
     }
 
     @Override
