@@ -44,8 +44,8 @@ public class OrderServiceImpl implements OrderService {
 
         orderRepository.addOrder(order);
 
-        //String message = order.getOrderStatusId() + " created";
-        //rabbitTemplate.convertAndSend(binding.getExchange(), binding.getRoutingKey(), message);
+        String message = order.getOrderStatusId() + " created";
+        rabbitTemplate.convertAndSend(binding.getExchange(), binding.getRoutingKey(), message);
 
     }
 
@@ -57,8 +57,8 @@ public class OrderServiceImpl implements OrderService {
         patientService.updatePatient(patient);
         orderRepository.updateOrder(order);
 
-        //String message = order.getOrderStatusId() + "updated";
-        //rabbitTemplate.convertAndSend(binding.getExchange(), binding.getRoutingKey(), message);
+        String message = order.getOrderStatusId() + " updated";
+        rabbitTemplate.convertAndSend(binding.getExchange(), binding.getRoutingKey(), message);
     }
 
     @Override
