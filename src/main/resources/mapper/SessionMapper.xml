@@ -11,14 +11,6 @@
         <result property="startTime" column="START_TIME"/>
     </resultMap>
 
-    <select id="getSessionBySessionId" parameterType="java.lang.String" resultMap="Session">
-        SELECT s.session_id,
-               s.start_time,
-               s.timeout_minutes
-        FROM sessions s
-        WHERE s.session_id = #{sessionId}
-    </select>
-
     <select id="getAllSessions" resultMap="Session">
         SELECT s.session_id,
                s.start_time,

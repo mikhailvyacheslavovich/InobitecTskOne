@@ -6,9 +6,9 @@ import ru.inobitec.order.model.OrderEntity;
 public interface OrderRepository {
     OrderDTO getOrderById(Long id);
 
-    OrderEntity addOrder(OrderDTO order);
+    OrderEntity addOrder(OrderEntity order);
 
-    OrderEntity updateOrder(OrderDTO order);
+    OrderEntity updateOrder(OrderEntity order);
 
     void deleteOrderById(Long id);
 }

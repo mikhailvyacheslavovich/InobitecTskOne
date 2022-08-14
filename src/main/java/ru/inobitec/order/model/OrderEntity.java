@@ -18,7 +18,7 @@ public class OrderEntity {
 
     public OrderDTO toDTO() {
         OrderDTO orderDTO = new OrderDTO();
-        orderDTO.setOrderItems(getOrderItems());
+        orderDTO.setOrderItems(orderItems.stream().map(OrderItemEntity::toDTO).toList());
         orderDTO.setCustomerComment(getCustomerComment());
         orderDTO.setCustomerPhone(getCustomerPhone());
         orderDTO.setCustomerName(getCustomerName());

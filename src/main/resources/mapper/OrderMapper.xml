@@ -10,7 +10,7 @@
         <result property="customerName" column="CUSTOMER_NAME"/>
         <result property="customerPhone" column="CUSTOMER_PHONE"/>
         <result property="customerComment" column="CUSTOMER_COMMENT"/>
-        <collection property="orderItems" javaType="ArrayList" resultMap="OrderItem" columnPrefix=""/>
+        <collection property="orderItems" javaType="ArrayList" resultMap="OrderItem" columnPrefix="i_"/>
     </resultMap>
 
     <resultMap id="OrderItem" type="ru.inobitec.order.model.OrderItemEntity">
@@ -26,11 +26,11 @@
                o.customer_name,
                o.customer_phone,
                o.customer_comment,
-               i.id,
-               i.order_id,
-               i.item_name
+               i.id AS i_id,
+               i.order_id AS i_order_id,
+               i.item_name AS i_item_name
         FROM "order" o
-                 JOIN order_item i on o.id = i.order_id
+                 JOIN order_item i ON o.id = i.order_id
         WHERE o.id = #{id}
     </select>
 

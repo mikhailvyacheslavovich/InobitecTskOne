@@ -7,8 +7,6 @@ import java.util.List;
 
 @Mapper
 public interface SessionMapper {
-    OrderSessionEntity getSessionBySessionId(String sessionId);
-
     List<OrderSessionEntity> getAllSessions();
 
 }

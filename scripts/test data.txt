@@ -1,0 +1,156 @@
+    ORDER
+
+create
+
+http://localhost:8080/order
+{
+	"orderStatusId": 1001,
+	"firstName": "Petr",
+	"lastName": "Petrov",
+	"birthday": "12-19-1996",
+    "customerName":"Petr Petrov",
+	"customerPhone": "8(944)-111-11-11",
+	"customerComment": "comment from Petr Petrov",
+    "orderItems": [
+        {
+            "itemName": "first"
+        },
+        {
+            "itemName": "second"
+        },
+        {
+            "itemName": "third"
+        }
+    ]
+}
+
+-----------------------------------------------------------------------------------
+
+read
+
+http://localhost:8080/order/1052
+
+
+-----------------------------------------------------------------------------------
+
+update
+
+http://localhost:8080/order
+
+{
+    "id":1093,
+	"orderStatusId": 1001,
+	"firstName": "Petr",
+	"lastName": "Petrov",
+	"birthday": "12-19-1996",
+    "customerName":"Sidor Sidorovich",
+	"customerPhone": "+7(546)-373-37-13",
+	"customerComment": "la la la",
+    "orderItems": [
+        {
+			"id":1293,
+			"orderId":1093,
+            "itemName": "first item name"
+        },
+        {
+			"id":1294,
+			"orderId":1093,
+            "itemName": "second item name"
+        },
+        {
+			"id":1067,
+			"orderId":1093,
+            "itemName": "third item name"
+        }
+    ]
+}
+-----------------------------------------------------------------------------------------
+delete
+
+http://localhost:8080/order/1052
+
+-------------------------------------------------------------------------------------------
+
+    SERVLETS
+
+create
+
+http://localhost:8080/orderServlet?SESSION-ID=1234-AAFF-BB55-DD22
+
+<message>
+	<command>create</command>
+	<body>
+		<order>
+			<orderStatusId>1</orderStatusId>
+			<firstName>Mike</firstName>
+			<lastName>Alex</lastName>
+			<birthday>12-19-1986</birthday>
+			<customerName>Mike Alex</customerName>
+			<customerPhone>+7-905-345-4523</customerPhone>
+			<customerComment>Please call me back</customerComment>
+			<items>
+				<item>Item #1</item>
+				<item>Item #2</item>
+				<item>Item #3</item>
+			</items>
+		</order>
+	</body>
+</message>
+
+-------------------------------------------------------------------------------
+
+read
+
+http://localhost:8080/orderServlet?id=1108&SESSION-ID=1234-AAFF-BB55-DD22
+
+<message>
+	<command>read</command>
+	<body>
+		<order>
+			<orderStatusId>1</orderStatusId>
+			<firstName>Mike</firstName>
+			<lastName>Alex</lastName>
+			<birthday>12-19-1986</birthday>
+			<customerName>Mike Alex</customerName>
+			<customerPhone>+7-905-345-4523</customerPhone>
+			<customerComment>Please call me back</customerComment>
+			<items>
+				<item>Item #1</item>
+				<item>Item #2</item>
+				<item>Item #3</item>
+			</items>
+		</order>
+	</body>
+</message>
+
+-----------------------------------------------------------------------------------------------
+
+update
+
+http://localhost:8080/orderServlet?id=1108&SESSION-ID=1234-AAFF-BB55-DD22
+
+<message>
+	<command>update</command>
+	<body>
+		<order>
+			<orderStatusId>1</orderStatusId>
+			<firstName>Mike</firstName>
+			<lastName>Alex</lastName>
+			<birthday>12-19-1986</birthday>
+			<customerName>Mike Alex</customerName>
+			<customerPhone>+7-111-222-3333</customerPhone>
+			<customerComment>call me</customerComment>
+			<items>
+				<item>#1</item>
+				<item>#2</item>
+				<item>#3</item>
+			</items>
+		</order>
+	</body>
+</message>
+
+-------------------------------------------------------------------------------------
+
+delete
+
+http://localhost:8080/orderServlet?id=1108&SESSION-ID=1234-AAFF-BB55-DD22

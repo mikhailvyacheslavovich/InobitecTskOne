@@ -7,6 +7,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
+import static ru.inobitec.order.util.StringConstants.DATE_FORMAT;
+
 @Data
 @RequiredArgsConstructor
 public class Patient {
@@ -15,8 +17,8 @@ public class Patient {
     private String midName;
     private String lastName;
     private Byte genderId;
-    @DateTimeFormat(pattern = "dd-mm-yyyy")
-    @JsonFormat(locale = "ru", timezone = "GMT+3", pattern = "dd-mm-yyyy")
+    @DateTimeFormat(pattern = DATE_FORMAT)
+    @JsonFormat(locale = "ru", timezone = "GMT+3", pattern = DATE_FORMAT)
     private Date birthday;
     private String phone;
     private String email;

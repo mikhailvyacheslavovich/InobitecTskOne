@@ -1,10 +1,11 @@
 package ru.inobitec.order.servlets;
 
+import org.springframework.stereotype.Component;
 import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
 import ru.inobitec.order.dto.OrderDTO;
 import ru.inobitec.order.dto.MessageDTO;
-import ru.inobitec.order.model.OrderItemEntity;
+import ru.inobitec.order.dto.OrderItemDTO;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -12,8 +13,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static ru.inobitec.order.util.StringConstants.DATE_FORMAT;
+
+@Component
 public class OrderServletHandler extends DefaultHandler {
-    private static final String ORDER = "order";
 
     private static final String ORDER_STATUS_ID = "orderStatusId";
 
@@ -36,6 +39,8 @@ public class OrderServletHandler extends DefaultHandler {
     private static final String BODY = "body";
 
     private static final String BIRTHDAY = "birthday";
+
+    private static final String DEFAULT_MESSAGE = "This tag name is not provided";
 
     private StringBuilder elementValue;
 
@@ -70,8 +75,11 @@ public class OrderServletHandler extends DefaultHandler {
             case BIRTHDAY -> elementValue = new StringBuilder();
             case ITEMS -> messageDTO.getOrderDTO().setOrderItems(new ArrayList<>());
             case ITEM -> {
-                messageDTO.getOrderDTO().getOrderItems().add(new OrderItemEntity());
+                messageDTO.getOrderDTO().getOrderItems().add(new OrderItemDTO());
                 elementValue = new StringBuilder();
+            }
+            default -> {
+                System.out.println(DEFAULT_MESSAGE);
             }
         }
 
@@ -96,11 +104,14 @@ public class OrderServletHandler extends DefaultHandler {
             case CUSTOMER_PHONE -> messageDTO.getOrderDTO().setCustomerPhone(elementValue.toString());
             case CUSTOMER_COMMENT -> messageDTO.getOrderDTO().setCustomerComment(elementValue.toString());
             case ITEM -> lastOrderItem().setItemName(elementValue.toString());
+            default -> {
+                System.out.println(DEFAULT_MESSAGE);
+            }
         }
     }
 
-    private OrderItemEntity lastOrderItem() {
-        List<OrderItemEntity> list = messageDTO.getOrderDTO().getOrderItems();
+    private OrderItemDTO lastOrderItem() {
+        List<OrderItemDTO> list = messageDTO.getOrderDTO().getOrderItems();
         return list.get(list.size() - 1);
     }
 
@@ -109,7 +120,7 @@ public class OrderServletHandler extends DefaultHandler {
     }
 
     private Date parseDate(String stringDate) throws ParseException {
-        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+        SimpleDateFormat formatter = new SimpleDateFormat(DATE_FORMAT);
         return formatter.parse(stringDate);
     }
 }

@@ -1,7 +1,6 @@
 package ru.inobitec.order.mappers;
 
 import org.apache.ibatis.annotations.*;
-import ru.inobitec.order.dto.OrderDTO;
 import ru.inobitec.order.model.OrderEntity;
 import ru.inobitec.order.model.OrderItemEntity;
 
@@ -11,8 +10,6 @@ import java.util.List;
 public interface OrderMapper {
 
     void addOrder(OrderEntity newOrder);
-
-    void addOrderItems(List<OrderItemEntity> items, Long orderId);
 
     void addOrderItem(OrderItemEntity item, Long orderId);
 
