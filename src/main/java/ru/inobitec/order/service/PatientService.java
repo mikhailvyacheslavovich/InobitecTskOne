@@ -10,6 +10,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import ru.inobitec.order.dto.OrderDTO;
 import ru.inobitec.order.dto.Patient;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -32,7 +33,7 @@ public class PatientService {
         UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(URL_PATIENT_NAME)
                 .queryParam(FIRST_NAME, firstName)
                 .queryParam(LAST_NAME, lastName)
-                .queryParam(BIRTHDAY, birthday);
+                .queryParam(BIRTHDAY, new SimpleDateFormat("dd-MM-yyyy").format(birthday));
 
         try {
             ResponseEntity<Patient> response = restTemplate.exchange(builder.toUriString(),

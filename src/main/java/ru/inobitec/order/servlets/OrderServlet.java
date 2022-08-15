@@ -45,9 +45,8 @@ public class OrderServlet extends HttpServlet {
         }
     }
 
-    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doPost(HttpServletRequest request, HttpServletResponse response) {
         try {
-            Long id = Long.parseLong(request.getParameter("id"));
             parser.parse(request.getInputStream(), orderServletHandler);
             MessageDTO result = orderServletHandler.getMessage();
             response.setContentType("text/html");
@@ -58,16 +57,15 @@ public class OrderServlet extends HttpServlet {
                     writer.println(SERVLET_CREATE);
                 }
                 case UPDATE -> {
-                    result.getOrderDTO().setId(id);
                     orderService.updateOrder(result.getOrderDTO());
                     writer.println(SERVLET_UPDATE);
                 }
                 case DELETE -> {
-                    orderService.deleteOrderById(id);
+                    orderService.deleteOrderById(result.getOrderDTO().getId());
                     writer.println(SERVLET_DELETE);
                 }
                 case READ -> {
-                    OrderDTO order = orderService.getOrderById(id);
+                    OrderDTO order = orderService.getOrderById(result.getOrderDTO().getId());
                     try {
                         JAXBContext context = JAXBContext.newInstance(OrderDTO.class);
                         Marshaller m = context.createMarshaller();

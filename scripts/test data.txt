@@ -89,9 +89,15 @@ http://localhost:8080/orderServlet?SESSION-ID=1234-AAFF-BB55-DD22
 			<customerPhone>+7-905-345-4523</customerPhone>
 			<customerComment>Please call me back</customerComment>
 			<items>
-				<item>Item #1</item>
-				<item>Item #2</item>
-				<item>Item #3</item>
+				<item>
+				    <itemName>Item #1</itemName>
+				</item>
+				<item>
+                    <itemName>Item #2</itemName>
+                </item>
+                <item>
+                	<itemName>Item #3</itemName>
+                </item>
 			</items>
 		</order>
 	</body>
@@ -101,24 +107,13 @@ http://localhost:8080/orderServlet?SESSION-ID=1234-AAFF-BB55-DD22
 
 read
 
-http://localhost:8080/orderServlet?id=1108&SESSION-ID=1234-AAFF-BB55-DD22
+http://localhost:8080/orderServlet?SESSION-ID=1234-AAFF-BB55-DD22
 
 <message>
 	<command>read</command>
 	<body>
 		<order>
-			<orderStatusId>1</orderStatusId>
-			<firstName>Mike</firstName>
-			<lastName>Alex</lastName>
-			<birthday>12-19-1986</birthday>
-			<customerName>Mike Alex</customerName>
-			<customerPhone>+7-905-345-4523</customerPhone>
-			<customerComment>Please call me back</customerComment>
-			<items>
-				<item>Item #1</item>
-				<item>Item #2</item>
-				<item>Item #3</item>
-			</items>
+		    <id>1105</id>
 		</order>
 	</body>
 </message>
@@ -127,23 +122,37 @@ http://localhost:8080/orderServlet?id=1108&SESSION-ID=1234-AAFF-BB55-DD22
 
 update
 
-http://localhost:8080/orderServlet?id=1108&SESSION-ID=1234-AAFF-BB55-DD22
+http://localhost:8080/orderServlet?SESSION-ID=1234-AAFF-BB55-DD22
 
 <message>
 	<command>update</command>
 	<body>
 		<order>
-			<orderStatusId>1</orderStatusId>
+            <id>1116</id>
+			<orderStatusId>1001</orderStatusId>
+            <customerName>Mike Alex</customerName>
 			<firstName>Mike</firstName>
 			<lastName>Alex</lastName>
-			<birthday>12-19-1986</birthday>
-			<customerName>Mike Alex</customerName>
-			<customerPhone>+7-111-222-3333</customerPhone>
+			<birthday>12-06-1996</birthday>
+			<customerName>John Doe</customerName>
+			<customerPhone>+7-111-111-1111</customerPhone>
 			<customerComment>call me</customerComment>
 			<items>
-				<item>#1</item>
-				<item>#2</item>
-				<item>#3</item>
+				<item>
+                    <itemId>1130</itemId>
+                    <orderId>1116</orderId>
+                    <itemName>#1</itemName>
+                </item>
+                <item>
+                    <itemId>1131</itemId>
+                    <orderId>1116</orderId>
+                    <itemName>#2</itemName>
+                </item>
+                <item>
+                    <itemId>1132</itemId>
+                    <orderId>1116</orderId>
+                    <itemName>#3</itemName>
+                </item>
 			</items>
 		</order>
 	</body>
@@ -153,4 +162,13 @@ http://localhost:8080/orderServlet?id=1108&SESSION-ID=1234-AAFF-BB55-DD22
 
 delete
 
-http://localhost:8080/orderServlet?id=1108&SESSION-ID=1234-AAFF-BB55-DD22
+http://localhost:8080/orderServlet?SESSION-ID=1234-AAFF-BB55-DD22
+
+<message>
+	<command>delete</command>
+	<body>
+		<order>
+		    <id>1105</id>
+		</order>
+	</body>
+</message>
