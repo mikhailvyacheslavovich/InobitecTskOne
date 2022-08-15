@@ -68,11 +68,11 @@ public class OrderServlet extends HttpServlet {
                     OrderDTO order = orderService.getOrderById(result.getOrderDTO().getId());
                     try {
                         JAXBContext context = JAXBContext.newInstance(OrderDTO.class);
-                        Marshaller m = context.createMarshaller();
-                        m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-                        StringWriter wr = new StringWriter();
-                        m.marshal(order, wr);
-                        writer.println(wr);
+                        Marshaller marshaller = context.createMarshaller();
+                        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+                        StringWriter stringWriter = new StringWriter();
+                        marshaller.marshal(order, stringWriter);
+                        writer.println(stringWriter);
                     } catch (JAXBException e) {
                         writer.println(UNABLE_TO_READ);
                         throw new RuntimeException(e);

@@ -47,7 +47,7 @@ public class OrderServiceImpl implements OrderService {
             order.setPatientId(patientId);
             orderRepository.addOrder(order.toEntity());
             String message = order.getOrderStatusId() + CREATED;
-            //rabbitSender.sendMessage(message);
+            rabbitSender.sendMessage(message);
         } catch (RuntimeException ex) {
             log.error(ex.getCause());
             throw new RuntimeException(ex);
@@ -63,7 +63,7 @@ public class OrderServiceImpl implements OrderService {
             patientService.updatePatient(patient);
             orderRepository.updateOrder(order.toEntity());
             String message = order.getOrderStatusId() + UPDATED;
-            //rabbitSender.sendMessage(message);
+            rabbitSender.sendMessage(message);
         } catch (RuntimeException ex) {
             log.error(ex.getCause());
             throw new RuntimeException(ex);

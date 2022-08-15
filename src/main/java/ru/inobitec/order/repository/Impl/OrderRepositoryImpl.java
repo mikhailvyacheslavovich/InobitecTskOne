@@ -21,7 +21,6 @@ public class OrderRepositoryImpl implements OrderRepository {
     @Transactional
     public OrderDTO getOrderById(Long id) {
         try {
-            OrderEntity cc = orderMapper.getOrderById(id);
             return orderMapper.getOrderById(id).toDTO();
         } catch (RuntimeException ex) {
             log.error(ex.getCause());
