@@ -18,8 +18,11 @@ public class StringConstants {
     public static final String UNKNOWN_SESSION = "Unknown session";
     public static final String SESSION_EXPIRED = "Session expired";
     public static final String SESSION_ID = "SESSION-ID";
-    public static final String URL = "http://localhost:8081/patient/";
-    public static final String URL_PATIENT_NAME = "http://localhost:8081/patientName/";
+    public static final String URL = "http://localhost:8081/";
+
+    public static final String PATIENT_NAME = "patientName/";
+
+    public static final String PATIENT = "patient/";
     public static final String FIRST_NAME = "firstName";
     public static final String LAST_NAME = "lastName";
     public static final String BIRTHDAY = "birthday";

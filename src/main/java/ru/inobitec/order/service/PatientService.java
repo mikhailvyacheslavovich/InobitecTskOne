@@ -30,10 +30,10 @@ public class PatientService {
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
-        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(URL_PATIENT_NAME)
+        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(URL + PATIENT_NAME)
                 .queryParam(FIRST_NAME, firstName)
                 .queryParam(LAST_NAME, lastName)
-                .queryParam(BIRTHDAY, new SimpleDateFormat("dd-MM-yyyy").format(birthday));
+                .queryParam(BIRTHDAY, new SimpleDateFormat(DATE_FORMAT).format(birthday));
 
         try {
             ResponseEntity<Patient> response = restTemplate.exchange(builder.toUriString(),
@@ -53,7 +53,7 @@ public class PatientService {
 
         try {
             ResponseEntity<Patient> response = restTemplate
-                    .exchange(URL + id, HttpMethod.GET, entity, Patient.class);
+                    .exchange(URL + PATIENT + id, HttpMethod.GET, entity, Patient.class);
             return response.getBody();
         } catch (Exception ex) {
             log.error(ex.getCause());
@@ -74,7 +74,7 @@ public class PatientService {
         HttpEntity<Map<String, Object>> entity = new HttpEntity<>(map, headers);
 
         try {
-            ResponseEntity<String> response = restTemplate.postForEntity(URL, entity, String.class);
+            ResponseEntity<String> response = restTemplate.postForEntity(URL + PATIENT, entity, String.class);
             return Long.parseLong(response.getBody());
         } catch (Exception ex) {
             log.error(ex.getCause());
@@ -88,7 +88,7 @@ public class PatientService {
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<Patient> requestBody = new HttpEntity<>(patient, headers);
         try {
-            restTemplate.put(URL, requestBody);
+            restTemplate.put(URL + PATIENT, requestBody);
         } catch (Exception ex) {
             log.error(ex.getCause());
         }
