@@ -5,9 +5,7 @@ CREATE TABLE "order"
 (
     ID                  INTEGER,
     ORDER_STATUS_ID     SMALLINT,
-    CUSTOMER_NAME       VARCHAR(64),
     PATIENT_ID          INTEGER,
-    CUSTOMER_PHONE      VARCHAR(24),
     CUSTOMER_COMMENT    VARCHAR(128)
 );
 ALTER TABLE "order"
@@ -34,8 +32,8 @@ DO $$
         v_order_item_id integer;
     BEGIN
         SELECT NEXTVAL('order_seq') INTO v_order_id;
-        INSERT INTO "order"(ID, ORDER_STATUS_ID, PATIENT_ID, CUSTOMER_NAME, CUSTOMER_PHONE, CUSTOMER_COMMENT)
-        VALUES (v_order_id, 1, 1005, 'Ivan Ivanov', '+7(952)-634-55-23', 'Pls. call before delivery');
+        INSERT INTO "order"(ID, ORDER_STATUS_ID, PATIENT_ID, CUSTOMER_COMMENT)
+        VALUES (v_order_id, 1, 1005, 'Pls. call before delivery');
 
         SELECT NEXTVAL('order_item_seq') INTO v_order_item_id;
         INSERT INTO ORDER_ITEM (ID, ORDER_ID, ITEM_NAME)

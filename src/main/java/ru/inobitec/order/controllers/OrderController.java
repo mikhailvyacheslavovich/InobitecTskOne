@@ -10,14 +10,19 @@ import ru.inobitec.order.dto.OrderDTO;
 
 import ru.inobitec.order.service.OrderService;
 
-import static ru.inobitec.order.util.StringConstants.*;
-
-
 @RestController
 @RequestMapping("/")
 @RequiredArgsConstructor
 @Log4j2
 public class OrderController {
+    private static final String ORDER_READ_NEGATIVE = "Unable to get order by id ";
+    private static final String ORDER_CREATED_POSITIVE = "Order was created successfully ";
+    private static final String ORDER_CREATED_NEGATIVE = "Unable to update order ";
+    private static final String ORDER_UPDATED_POSITIVE = "Order has been updated successfully ";
+    private static final String ORDER_UPDATED_NEGATIVE = "Unable to update order by id ";
+    private static final String ORDER_DELETED_POSITIVE = "Order deleted successfully ";
+    private static final String ORDER_DELETED_NEGATIVE = "Unable to delete order by id ";
+
     private final OrderService orderService;
 
     @ApiOperation(value = "Получение сведений об ордере",
@@ -54,7 +59,7 @@ public class OrderController {
             return new ResponseEntity<>(ORDER_UPDATED_POSITIVE, HttpStatus.OK);
         } catch (RuntimeException ex) {
             log.error(ex.getCause());
-            return new ResponseEntity<>(ORDER_UPDATED_NEGATIVE + order.getId() +  ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(ORDER_UPDATED_NEGATIVE + order.getId() + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

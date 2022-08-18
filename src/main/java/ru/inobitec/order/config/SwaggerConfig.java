@@ -7,10 +7,11 @@ import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 
-import static ru.inobitec.order.util.StringConstants.BASE_PACKAGE;
-
 @Configuration
 public class SwaggerConfig {
+
+    private static final String BASE_PACKAGE = "ru.inobitec.order.controllers";
+
     @Bean
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)

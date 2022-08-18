@@ -23,12 +23,19 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
-import static ru.inobitec.order.util.StringConstants.*;
-
 @WebServlet("/orderServlet")
 @RequiredArgsConstructor
 @Log4j2
 public class OrderServlet extends HttpServlet {
+    private static final String SERVLET_CREATE_MESSAGE = "Create successfully";
+    private static final String SERVLET_UPDATE_MESSAGE = "Update successfully";
+    private static final String SERVLET_DELETE_MESSAGE = "Delete successfully";
+    private static final String SERVLET_CREATE = "create";
+    private static final String SERVLET_READ = "read";
+    private static final String SERVLET_UPDATE = "update";
+    private static final String SERVLET_DELETE = "delete";
+    private static final String SERVLET_INVALID_COMMAND = "Invalid command ";
+    private static final String SERVLET_ERROR_MESSAGE = "Unable to read ";
 
     private final OrderService orderService;
     private OrderServletHandler orderServletHandler;
@@ -52,19 +59,19 @@ public class OrderServlet extends HttpServlet {
             response.setContentType("text/html");
             PrintWriter writer = response.getWriter();
             switch (result.getCommand()) {
-                case CREATE -> {
+                case SERVLET_CREATE -> {
                     orderService.addOrder(result.getOrderDTO());
-                    writer.println(SERVLET_CREATE);
+                    writer.println(SERVLET_CREATE_MESSAGE);
                 }
-                case UPDATE -> {
+                case SERVLET_UPDATE -> {
                     orderService.updateOrder(result.getOrderDTO());
-                    writer.println(SERVLET_UPDATE);
+                    writer.println(SERVLET_UPDATE_MESSAGE);
                 }
-                case DELETE -> {
+                case SERVLET_DELETE -> {
                     orderService.deleteOrderById(result.getOrderDTO().getId());
-                    writer.println(SERVLET_DELETE);
+                    writer.println(SERVLET_DELETE_MESSAGE);
                 }
-                case READ -> {
+                case SERVLET_READ -> {
                     OrderDTO order = orderService.getOrderById(result.getOrderDTO().getId());
                     try {
                         JAXBContext context = JAXBContext.newInstance(OrderDTO.class);
@@ -74,11 +81,15 @@ public class OrderServlet extends HttpServlet {
                         marshaller.marshal(order, stringWriter);
                         writer.println(stringWriter);
                     } catch (JAXBException e) {
-                        writer.println(UNABLE_TO_READ);
+                        log.error(e.getCause());
+                        writer.println(SERVLET_ERROR_MESSAGE);
                         throw new RuntimeException(e);
                     }
                 }
-                default -> writer.println(INVALID_COMMAND);
+                default -> {
+                    log.info(SERVLET_INVALID_COMMAND + result.getCommand());
+                    writer.println(SERVLET_INVALID_COMMAND);
+                }
             }
         } catch (SAXException | IOException ex) {
             log.error(ex.getMessage());

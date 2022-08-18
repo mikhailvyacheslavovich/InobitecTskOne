@@ -11,8 +11,6 @@ public class OrderEntity {
     private Long id;
     private Long orderStatusId;
     private Long patientId;
-    private String customerName;
-    private String customerPhone;
     private String customerComment;
     private List<OrderItemEntity> orderItems;
 
@@ -20,8 +18,6 @@ public class OrderEntity {
         OrderDTO orderDTO = new OrderDTO();
         orderDTO.setOrderItems(orderItems.stream().map(OrderItemEntity::toDTO).toList());
         orderDTO.setCustomerComment(getCustomerComment());
-        orderDTO.setCustomerPhone(getCustomerPhone());
-        orderDTO.setCustomerName(getCustomerName());
         orderDTO.setOrderStatusId(getOrderStatusId());
         orderDTO.setId(getId());
         orderDTO.setPatientId(getPatientId());

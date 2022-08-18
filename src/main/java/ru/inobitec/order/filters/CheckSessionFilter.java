@@ -11,13 +11,16 @@ import java.io.IOException;
 import java.time.Duration;
 import java.util.Date;
 
-import static ru.inobitec.order.util.StringConstants.*;
-
-
 @WebFilter("/orderServlet")
 @RequiredArgsConstructor
 @Log4j2
 public class CheckSessionFilter implements Filter {
+
+    private static final String INVALID_SESSION = "Invalid session";
+    private static final String UNKNOWN_SESSION = "Unknown session";
+    private static final String SESSION_EXPIRED = "Session expired";
+    private static final String SESSION_ID = "SESSION-ID";
+
     @Autowired
     private final SessionCache sessionCache;
 

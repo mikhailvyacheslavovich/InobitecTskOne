@@ -34,11 +34,15 @@ public class OrderServletHandler extends DefaultHandler {
 
     private static final String FIRST_NAME = "firstName";
 
-    private static final String CUSTOMER_PHONE = "customerPhone";
+    private static final String MID_NAME = "midName";
 
+    private static final String PHONE = "phone";
+
+    private static final String EMAIL = "email";
+
+    private static final String ADDRESS = "address";
+    private static final String GENDER_ID = "genderId";
     private static final String CUSTOMER_COMMENT = "customerComment";
-
-    private static final String CUSTOMER_NAME = "customerName";
 
     private static final String ITEMS = "items";
 
@@ -83,9 +87,12 @@ public class OrderServletHandler extends DefaultHandler {
                 case BODY -> messageDTO.setOrderDTO(new OrderDTO());
                 case ORDER_STATUS_ID -> elementValue = new StringBuilder();
                 case FIRST_NAME -> elementValue = new StringBuilder();
+                case MID_NAME -> elementValue = new StringBuilder();
                 case LAST_NAME -> elementValue = new StringBuilder();
-                case CUSTOMER_NAME -> elementValue = new StringBuilder();
-                case CUSTOMER_PHONE -> elementValue = new StringBuilder();
+                case EMAIL -> elementValue = new StringBuilder();
+                case GENDER_ID -> elementValue = new StringBuilder();
+                case PHONE -> elementValue = new StringBuilder();
+                case ADDRESS -> elementValue = new StringBuilder();
                 case CUSTOMER_COMMENT -> elementValue = new StringBuilder();
                 case BIRTHDAY -> elementValue = new StringBuilder();
                 case ITEMS -> messageDTO.getOrderDTO().setOrderItems(new ArrayList<>());
@@ -98,9 +105,7 @@ public class OrderServletHandler extends DefaultHandler {
         } catch (RuntimeException ex) {
             log.error(ex.getMessage());
         }
-
     }
-
 
     @Override
     public void endElement(String uri, String localName, String qName) {
@@ -119,9 +124,12 @@ public class OrderServletHandler extends DefaultHandler {
                     }
                 }
                 case LAST_NAME -> messageDTO.getOrderDTO().setLastName(elementValue.toString());
-                case CUSTOMER_NAME -> messageDTO.getOrderDTO().setCustomerName(elementValue.toString());
                 case FIRST_NAME -> messageDTO.getOrderDTO().setFirstName(elementValue.toString());
-                case CUSTOMER_PHONE -> messageDTO.getOrderDTO().setCustomerPhone(elementValue.toString());
+                case MID_NAME -> messageDTO.getOrderDTO().setMidName(elementValue.toString());
+                case EMAIL -> messageDTO.getOrderDTO().setEmail(elementValue.toString());
+                case ADDRESS -> messageDTO.getOrderDTO().setAddress(elementValue.toString());
+                case PHONE -> messageDTO.getOrderDTO().setPhone(elementValue.toString());
+                case GENDER_ID -> messageDTO.getOrderDTO().setGenderId(Byte.parseByte(elementValue.toString()));
                 case CUSTOMER_COMMENT -> messageDTO.getOrderDTO().setCustomerComment(elementValue.toString());
                 case ITEM_ID -> lastOrderItem().setId(Long.parseLong(elementValue.toString()));
                 case ORDER_ID -> lastOrderItem().setOrderId(Long.parseLong(elementValue.toString()));

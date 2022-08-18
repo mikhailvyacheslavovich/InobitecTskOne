@@ -7,8 +7,6 @@
         <result property="id" column="id"/>
         <result property="orderStatusId" column="ORDER_STATUS_ID"/>
         <result property="patientId" column="patient_id"/>
-        <result property="customerName" column="CUSTOMER_NAME"/>
-        <result property="customerPhone" column="CUSTOMER_PHONE"/>
         <result property="customerComment" column="CUSTOMER_COMMENT"/>
         <collection property="orderItems" javaType="ArrayList" resultMap="OrderItem" columnPrefix="i_"/>
     </resultMap>
@@ -23,8 +21,6 @@
         SELECT o.id,
                o.order_status_id,
                o.patient_id,
-               o.customer_name,
-               o.customer_phone,
                o.customer_comment,
                i.id AS i_id,
                i.order_id AS i_order_id,
@@ -37,8 +33,8 @@
     <insert id="addOrder" parameterType="ru.inobitec.order.model.OrderEntity" useGeneratedKeys="true">
         <selectKey keyProperty="id" keyColumn="id" resultType="long" order="BEFORE">SELECT nextval('ORDER_SEQ')
         </selectKey>
-        INSERT INTO "order" (id, order_status_id, customer_name, customer_phone, customer_comment, patient_id)
-        VALUES (#{id}, #{orderStatusId}, #{customerName}, #{customerPhone}, #{customerComment}, #{patientId});
+        INSERT INTO "order" (id, order_status_id, customer_comment, patient_id)
+        VALUES (#{id}, #{orderStatusId}, #{customerComment}, #{patientId});
     </insert>
 
     <insert id="addOrderItem" keyColumn="id" keyProperty="id" parameterType="ru.inobitec.order.model.OrderItemEntity" useGeneratedKeys="true">
@@ -51,8 +47,6 @@
     <update id="updateOrder" parameterType="ru.inobitec.order.model.OrderEntity">
         update "order"
         set order_status_id  = #{orderStatusId},
-            customer_name    = #{customerName},
-            customer_phone   = #{customerPhone},
             customer_comment = #{customerComment}
         where id = #{id};
     </update>

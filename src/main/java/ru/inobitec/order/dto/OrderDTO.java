@@ -18,13 +18,16 @@ public class OrderDTO {
     private Long id;
     private Long orderStatusId;
     private Long patientId;
-    private String customerName;
-    private String customerPhone;
     private String customerComment;
     private List<OrderItemDTO> orderItems;
     private Patient patient;
     private String firstName;
+    private String midName;
     private String lastName;
+    private String address;
+    private String email;
+    private String phone;
+    private Byte genderId;
     @DateTimeFormat(pattern = DATE_FORMAT)
     @JsonFormat(locale = "ru", timezone = "GMT+3", pattern = DATE_FORMAT)
     private Date birthday;
@@ -33,11 +36,9 @@ public class OrderDTO {
         OrderEntity orderEntity = new OrderEntity();
         orderEntity.setOrderStatusId(getOrderStatusId());
         orderEntity.setCustomerComment(getCustomerComment());
-        orderEntity.setCustomerName(getCustomerName());
         orderEntity.setOrderItems(orderItems.stream().map(OrderItemDTO::toEntity).toList());
         orderEntity.setPatientId(getPatientId());
         orderEntity.setId(getId());
-        orderEntity.setCustomerPhone(getCustomerPhone());
         return orderEntity;
     }
 }

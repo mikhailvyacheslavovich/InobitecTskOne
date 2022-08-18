@@ -15,6 +15,6 @@
         SELECT s.session_id,
                s.start_time,
                s.timeout_minutes
-        FROM  sessions s;
+        FROM sessions s;
     </select>
 </mapper>

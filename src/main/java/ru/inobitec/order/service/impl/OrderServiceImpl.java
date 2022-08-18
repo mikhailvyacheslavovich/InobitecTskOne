@@ -11,15 +11,13 @@ import ru.inobitec.order.repository.OrderRepository;
 import ru.inobitec.order.service.PatientService;
 import ru.inobitec.order.service.OrderService;
 
-import static ru.inobitec.order.util.StringConstants.CREATED;
-import static ru.inobitec.order.util.StringConstants.UPDATED;
-
-
 @Service
 @RequiredArgsConstructor
 @Log4j2
 public class OrderServiceImpl implements OrderService {
 
+    private static final String RABBIT_CREATE_COMMAND = " created";
+    private static final String RABBIT_UPDATE_COMMAND = " updated";
     private final RabbitSender rabbitSender;
     private final PatientService patientService;
     private final OrderRepository orderRepository;
@@ -41,13 +39,12 @@ public class OrderServiceImpl implements OrderService {
     public void addOrder(OrderDTO order) {
         try {
             Long patientId = null;
-            if (patientService.getPatientByName(order.getFirstName(), order.getLastName(), order.getBirthday()) == null) {
+            if (patientService.getPatientByName(order.getFirstName(), order.getLastName(), order.getMidName(), order.getBirthday()) == null) {
                 patientId = patientService.addPatient(order);
             }
             order.setPatientId(patientId);
             orderRepository.addOrder(order.toEntity());
-            String message = order.getOrderStatusId() + CREATED;
-            rabbitSender.sendMessage(message);
+            //rabbitSender.sendMessage(order.getOrderStatusId() + RABBIT_CREATE_COMMAND);
         } catch (RuntimeException ex) {
             log.error(ex.getCause());
             throw new RuntimeException(ex);
@@ -59,11 +56,13 @@ public class OrderServiceImpl implements OrderService {
         try {
             OrderDTO orderDTO = orderRepository.getOrderById(order.getId());
             Patient patient = patientService.getPatientById(orderDTO.getPatientId());
-            patient.setPhone(order.getCustomerPhone());
+            patient.setPhone(order.getPhone());
+            patient.setEmail(order.getEmail());
+            patient.setAddress(order.getAddress());
+            patient.setGenderId(order.getGenderId());
             patientService.updatePatient(patient);
             orderRepository.updateOrder(order.toEntity());
-            String message = order.getOrderStatusId() + UPDATED;
-            rabbitSender.sendMessage(message);
+            //rabbitSender.sendMessage(order.getOrderStatusId() + RABBIT_UPDATE_COMMAND);
         } catch (RuntimeException ex) {
             log.error(ex.getCause());
             throw new RuntimeException(ex);

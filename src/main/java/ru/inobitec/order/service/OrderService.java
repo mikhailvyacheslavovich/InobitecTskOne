@@ -3,7 +3,7 @@ package ru.inobitec.order.service;
 import ru.inobitec.order.dto.OrderDTO;
 
 public interface OrderService {
-    void addOrder(OrderDTO newOrder);
+    void addOrder(OrderDTO order);
 
     void updateOrder(OrderDTO order);
 

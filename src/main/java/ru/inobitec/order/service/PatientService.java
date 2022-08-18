@@ -2,7 +2,6 @@ package ru.inobitec.order.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -22,8 +21,19 @@ import static ru.inobitec.order.util.StringConstants.*;
 @RequiredArgsConstructor
 @Log4j2
 public class PatientService {
+    private static final String URL = "http://localhost:8081/";
+    private static final String PATIENT_NAME = "patientName/";
+    private static final String PATIENT = "patient/";
+    private static final String FIRST_NAME = "firstName";
+    private static final String MID_NAME = "midName";
+    private static final String LAST_NAME = "lastName";
+    private static final String GENDER_ID = "genderId";
+    private static final String PHONE = "phone";
+    private static final String BIRTHDAY = "birthday";
+    private static final String EMAIL = "email";
+    private static final String ADDRESS = "address";
 
-    public Patient getPatientByName(String firstName, String lastName, Date birthday) {
+    public Patient getPatientByName(String firstName, String lastName, String midName, Date birthday) {
 
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
@@ -32,6 +42,7 @@ public class PatientService {
 
         UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(URL + PATIENT_NAME)
                 .queryParam(FIRST_NAME, firstName)
+                .queryParam(MID_NAME, midName)
                 .queryParam(LAST_NAME, lastName)
                 .queryParam(BIRTHDAY, new SimpleDateFormat(DATE_FORMAT).format(birthday));
 
@@ -69,7 +80,11 @@ public class PatientService {
         Map<String, Object> map = new HashMap<>();
         map.put(FIRST_NAME, order.getFirstName());
         map.put(LAST_NAME, order.getLastName());
-        map.put(PHONE, order.getCustomerPhone());
+        map.put(MID_NAME, order.getMidName());
+        map.put(GENDER_ID, order.getGenderId());
+        map.put(EMAIL, order.getEmail());
+        map.put(ADDRESS, order.getAddress());
+        map.put(PHONE, order.getPhone());
         map.put(BIRTHDAY, order.getBirthday());
         HttpEntity<Map<String, Object>> entity = new HttpEntity<>(map, headers);
 

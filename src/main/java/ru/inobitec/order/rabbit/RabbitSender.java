@@ -6,7 +6,6 @@ import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Component;
 
-
 @Component
 @RequiredArgsConstructor
 @Log4j2
@@ -16,10 +15,10 @@ public class RabbitSender {
 
     private final Binding binding;
 
-    public void sendMessage(String message){
+    public void sendMessage(String message) {
         try {
             rabbitTemplate.convertAndSend(binding.getExchange(), binding.getRoutingKey(), message);
-        }catch (RuntimeException ex){
+        } catch (RuntimeException ex) {
             log.error(ex.getCause());
         }
     }
