@@ -8,7 +8,7 @@ http://localhost:8080/order
 	"firstName": "Petr",
 	"midName": "Ivanovich",
 	"lastName": "Petrov",
-	"birthday": "12-19-1996",
+	"birthday": "12-11-1996",
 	"phone": "8(111)-111-11-11",
 	"address": "Lisukova street house 77",
 	"email": "rsppdfr@gmail.com",
@@ -46,7 +46,7 @@ http://localhost:8080/order
 	"firstName": "Petr",
 	"midName": "Ivanovich",
 	"lastName": "Petrov",
-	"birthday": "12-19-1996",
+	"birthday": "12-11-1996",
 	"phone": "+8(222)-222-22-22",
 	"address":"Zhukova street house 77",
 	"email": "cccccc@gmail.com",
@@ -91,7 +91,7 @@ http://localhost:8080/orderServlet?SESSION-ID=1234-AAFF-BB55-DD22
 			<firstName>Mikhail</firstName>
 			<midName>Igorevich</midName>
 			<lastName>Alexeev</lastName>
-			<birthday>12-19-1986</birthday>
+			<birthday>15-11-1986</birthday>
 			<phone>+7-905-345-4523</phone>
 			<address>Lisukova street 44</address>
 			<email>strpb@gmail.com</email>
@@ -142,7 +142,7 @@ http://localhost:8080/orderServlet?SESSION-ID=1234-AAFF-BB55-DD22
 			<firstName>Mikhail</firstName>
             <midName>Igorevich</midName>
 			<lastName>Alexeev</lastName>
-			<birthday>12-19-1986</birthday>
+			<birthday>15-11-1986</birthday>
 			<phone>+7-111-111-1111</phone>
 			<address>Holsunova 58</address>
             <email>22222@gmail.com</email>
