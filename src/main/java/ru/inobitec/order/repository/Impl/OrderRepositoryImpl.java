@@ -33,9 +33,7 @@ public class OrderRepositoryImpl implements OrderRepository {
     public OrderEntity addOrder(OrderEntity order) {
         try {
             orderMapper.addOrder(order);
-            for (OrderItemEntity item : order.getOrderItems()) {
-                orderMapper.addOrderItem(item, order.getId());
-            }
+            order.getOrderItems().forEach(item -> orderMapper.addOrderItem(item, order.getId()));
             return order;
         } catch (RuntimeException ex) {
             log.error(ex.getCause());
