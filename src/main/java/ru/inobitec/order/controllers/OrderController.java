@@ -60,11 +60,11 @@ public class OrderController {
 
     @ApiOperation(value = "Изменение ордера",
             notes = "также обновляется информация в patient")
-    @PutMapping("/order")
-    public ResponseEntity<String> updateOrder(@RequestBody OrderDTO order) {
+    @PutMapping("/order/{id}")
+    public ResponseEntity<String> updateOrder(@RequestBody OrderDTO order, @PathVariable("id") Long id) {
         try {
-            Long id = orderService.updateOrder(order);
-            if (id == null) {
+            Long returnedId = orderService.updateOrder(order);
+            if (returnedId == null) {
                 return new ResponseEntity<>(NOT_EXIST_ORDER_FOR_UPDATE + order.getId(), HttpStatus.NOT_FOUND);
             }
             return new ResponseEntity<>(ORDER_UPDATED_POSITIVE, HttpStatus.OK);

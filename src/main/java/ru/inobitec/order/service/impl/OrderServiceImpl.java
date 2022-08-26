@@ -50,7 +50,7 @@ public class OrderServiceImpl implements OrderService {
             }
             order.setPatientId(patientId);
             orderRepository.addOrder(order.toEntity());
-            //rabbitSender.sendMessage(order.getOrderStatusId() + RABBIT_CREATE_COMMAND);
+            rabbitSender.sendMessage(order.getOrderStatusId() + RABBIT_CREATE_COMMAND);
         } catch (RuntimeException ex) {
             log.error(ex.getCause());
             throw new RuntimeException(ex);
@@ -69,7 +69,7 @@ public class OrderServiceImpl implements OrderService {
                 patient.setGenderId(order.getGenderId());
                 patientService.updatePatient(patient);
                 Long id = orderRepository.updateOrder(order.toEntity()).getId();
-                //rabbitSender.sendMessage(order.getOrderStatusId() + RABBIT_UPDATE_COMMAND);
+                rabbitSender.sendMessage(order.getOrderStatusId() + RABBIT_UPDATE_COMMAND);
                 return id;
             } else {
                 return null;
