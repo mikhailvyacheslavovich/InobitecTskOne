@@ -10,5 +10,5 @@ public interface OrderRepository {
 
     OrderEntity updateOrder(OrderEntity order);
 
-    void deleteOrderById(Long id);
+    Long deleteOrderById(Long id);
 }

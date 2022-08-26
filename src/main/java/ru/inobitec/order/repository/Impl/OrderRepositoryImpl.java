@@ -9,6 +9,7 @@ import ru.inobitec.order.mappers.OrderMapper;
 import ru.inobitec.order.model.OrderEntity;
 import ru.inobitec.order.model.OrderItemEntity;
 import ru.inobitec.order.repository.OrderRepository;
+import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
@@ -21,7 +22,11 @@ public class OrderRepositoryImpl implements OrderRepository {
     @Transactional
     public OrderDTO getOrderById(Long id) {
         try {
-            return orderMapper.getOrderById(id).toDTO();
+            OrderEntity order = orderMapper.getOrderById(id);
+            if (order == null) {
+                return null;
+            }
+            return order.toDTO();
         } catch (RuntimeException ex) {
             log.error(ex.getCause());
             throw new RuntimeException(ex);
@@ -46,7 +51,25 @@ public class OrderRepositoryImpl implements OrderRepository {
     public OrderEntity updateOrder(OrderEntity order) {
         try {
             orderMapper.updateOrder(order);
-            orderMapper.updateOrderItems(order.getOrderItems());
+
+            //альтернативный вариант апдейта
+            //orderMapper.deleteOrderItemsById(order.getId());
+            //order.getOrderItems().forEach(item -> orderMapper.addOrderItem(item, order.getId()));
+
+            List<Long> itemIds = orderMapper.getAllItemsIdByOrderId(order.getId());
+            List<OrderItemEntity> items = order.getOrderItems();
+            items.forEach(item -> {
+                if (item.getId() == null) {
+                    orderMapper.addOrderItem(item, order.getId());
+                }
+                if (itemIds.contains(item.getId())) {
+                    orderMapper.updateOrderItem(item);
+                    itemIds.remove(item.getId());
+                }
+            });
+
+            itemIds.forEach(orderMapper::deleteOrderItemById);
+
             return order;
         } catch (RuntimeException ex) {
             log.error(ex.getCause());
@@ -56,10 +79,10 @@ public class OrderRepositoryImpl implements OrderRepository {
 
     @Override
     @Transactional
-    public void deleteOrderById(Long id) {
+    public Long deleteOrderById(Long id) {
         try {
             orderMapper.deleteOrderItemsById(id);
-            orderMapper.deleteOrderById(id);
+            return orderMapper.deleteOrderById(id);
         } catch (RuntimeException ex) {
             log.error(ex.getCause());
             throw new RuntimeException(ex);

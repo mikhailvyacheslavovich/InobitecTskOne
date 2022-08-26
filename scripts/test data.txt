@@ -53,20 +53,21 @@ http://localhost:8080/order
     "genderId" : 1,
 	"customerComment": "la la la",
     "orderItems": [
-        {
-			"id":1293,
-			"orderId":1093,
-            "itemName": "first item name"
-        },
-        {
+       {
 			"id":1294,
 			"orderId":1093,
-            "itemName": "second item name"
+            "itemName": "second item name updated"
         },
         {
 			"id":1067,
 			"orderId":1093,
-            "itemName": "third item name"
+            "itemName": "third item name updated"
+        },
+        {
+            "itemName": "added item name"
+        },
+        {
+            "itemName": "added item name 2"
         }
     ]
 }

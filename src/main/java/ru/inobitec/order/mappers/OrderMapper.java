@@ -17,10 +17,16 @@ public interface OrderMapper {
 
     void updateOrderItems(List<OrderItemEntity> items);
 
-    void deleteOrderById(Long id);
+    void updateOrderItem(OrderItemEntity item);
+
+    Long deleteOrderById(Long id);
 
     void deleteOrderItemsById(Long id);
 
     OrderEntity getOrderById(Long id);
+
+    List<Long> getAllItemsIdByOrderId(Long id);
+
+    Long deleteOrderItemById(Long id);
 
 }

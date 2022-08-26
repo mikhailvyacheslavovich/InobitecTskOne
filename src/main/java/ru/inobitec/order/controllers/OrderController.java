@@ -22,6 +22,10 @@ public class OrderController {
     private static final String ORDER_UPDATED_NEGATIVE = "Unable to update order by id ";
     private static final String ORDER_DELETED_POSITIVE = "Order deleted successfully ";
     private static final String ORDER_DELETED_NEGATIVE = "Unable to delete order by id ";
+    private static final String NOT_EXIST_ORDER = "Can not find order with id = ";
+    private static final String NOT_EXIST_ORDER_FOR_UPDATE = "Can not find order for update with id = ";
+
+    private static final String NOT_EXIST_ORDER_FOR_DELETE = "Can not find order with id = ";
 
     private final OrderService orderService;
 
@@ -30,7 +34,11 @@ public class OrderController {
     @GetMapping("/order/{id}")
     public ResponseEntity<OrderDTO> getOrderById(@PathVariable("id") Long id) {
         try {
-            return new ResponseEntity<>(orderService.getOrderById(id), HttpStatus.OK);
+            OrderDTO orderDTO = orderService.getOrderById(id);
+            if (orderDTO == null) {
+                return new ResponseEntity(NOT_EXIST_ORDER + id, HttpStatus.NOT_FOUND);
+            }
+            return new ResponseEntity<>(orderDTO, HttpStatus.OK);
         } catch (RuntimeException ex) {
             log.error(ex.getCause());
             return new ResponseEntity(ORDER_READ_NEGATIVE + id + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -55,7 +63,10 @@ public class OrderController {
     @PutMapping("/order")
     public ResponseEntity<String> updateOrder(@RequestBody OrderDTO order) {
         try {
-            orderService.updateOrder(order);
+            Long id = orderService.updateOrder(order);
+            if (id == null) {
+                return new ResponseEntity<>(NOT_EXIST_ORDER_FOR_UPDATE + order.getId(), HttpStatus.NOT_FOUND);
+            }
             return new ResponseEntity<>(ORDER_UPDATED_POSITIVE, HttpStatus.OK);
         } catch (RuntimeException ex) {
             log.error(ex.getCause());
@@ -68,7 +79,10 @@ public class OrderController {
     @DeleteMapping("/order/{id}")
     public ResponseEntity<String> deleteOrderById(@PathVariable("id") Long id) {
         try {
-            orderService.deleteOrderById(id);
+            Long oId = orderService.deleteOrderById(id);
+            if (oId == 0) {
+                return new ResponseEntity<>(NOT_EXIST_ORDER_FOR_DELETE + id, HttpStatus.NOT_FOUND);
+            }
             return new ResponseEntity<>(ORDER_DELETED_POSITIVE, HttpStatus.OK);
         } catch (RuntimeException ex) {
             log.error(ex.getCause());

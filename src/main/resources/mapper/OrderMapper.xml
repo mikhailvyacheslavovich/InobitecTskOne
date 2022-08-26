@@ -22,12 +22,21 @@
                o.order_status_id,
                o.patient_id,
                o.customer_comment,
-               i.id AS i_id,
-               i.order_id AS i_order_id,
+               i.id        AS i_id,
+               i.order_id  AS i_order_id,
                i.item_name AS i_item_name
         FROM "order" o
                  JOIN order_item i ON o.id = i.order_id
         WHERE o.id = #{id}
+    </select>
+    <resultMap id="ItemIds" type="java.lang.Long">
+
+    </resultMap>
+
+    <select id="getAllItemsIdByOrderId" parameterType="java.lang.Long" resultMap="ItemIds">
+        SELECT id
+        FROM order_item
+        WHERE order_id = #{orderId}
     </select>
 
     <insert id="addOrder" parameterType="ru.inobitec.order.model.OrderEntity" useGeneratedKeys="true">
@@ -37,7 +46,8 @@
         VALUES (#{id}, #{orderStatusId}, #{customerComment}, #{patientId});
     </insert>
 
-    <insert id="addOrderItem" keyColumn="id" keyProperty="id" parameterType="ru.inobitec.order.model.OrderItemEntity" useGeneratedKeys="true">
+    <insert id="addOrderItem" keyColumn="id" keyProperty="id" parameterType="ru.inobitec.order.model.OrderItemEntity"
+            useGeneratedKeys="true">
         <selectKey keyProperty="id" keyColumn="id" resultType="long" order="BEFORE">SELECT nextval('ORDER_ITEM_SEQ')
         </selectKey>
         insert into order_item(id, order_id, item_name)
@@ -57,6 +67,12 @@
         </foreach>
     </update>
 
+    <update id="updateOrderItem" parameterType="ru.inobitec.order.model.OrderItemEntity">
+        UPDATE order_item
+        SET item_name = #{itemName}
+        WHERE id = #{id};
+    </update>
+
     <delete id="deleteOrderById">
         DELETE
         FROM "order"
@@ -67,6 +83,12 @@
         DELETE
         FROM order_item
         WHERE order_id = #{id};
+    </delete>
+
+    <delete id="deleteOrderItemById">
+        DELETE
+        FROM order_item
+        WHERE id = #{id};
     </delete>
 
 </mapper>

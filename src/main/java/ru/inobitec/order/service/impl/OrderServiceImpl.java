@@ -26,6 +26,9 @@ public class OrderServiceImpl implements OrderService {
     public OrderDTO getOrderById(Long id) {
         try {
             OrderDTO order = orderRepository.getOrderById(id);
+            if (order == null){
+                return null;
+            }
             Patient patient = patientService.getPatientById(order.getPatientId());
             order.setPatient(patient);
             return order;
@@ -38,13 +41,16 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public void addOrder(OrderDTO order) {
         try {
-            Long patientId = null;
-            if (patientService.getPatientByName(order.getFirstName(), order.getLastName(), order.getMidName(), order.getBirthday()) == null) {
+            Long patientId;
+            Patient patient = patientService.getPatientByName(order.getFirstName(), order.getLastName(), order.getMidName(), order.getBirthday());
+            if (patient == null) {
                 patientId = patientService.addPatient(order);
+            } else {
+                patientId = patient.getId();
             }
             order.setPatientId(patientId);
             orderRepository.addOrder(order.toEntity());
-            rabbitSender.sendMessage(order.getOrderStatusId() + RABBIT_CREATE_COMMAND);
+            //rabbitSender.sendMessage(order.getOrderStatusId() + RABBIT_CREATE_COMMAND);
         } catch (RuntimeException ex) {
             log.error(ex.getCause());
             throw new RuntimeException(ex);
@@ -52,17 +58,22 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void updateOrder(OrderDTO order) {
+    public Long updateOrder(OrderDTO order) {
         try {
             OrderDTO orderDTO = orderRepository.getOrderById(order.getId());
-            Patient patient = patientService.getPatientById(orderDTO.getPatientId());
-            patient.setPhone(order.getPhone());
-            patient.setEmail(order.getEmail());
-            patient.setAddress(order.getAddress());
-            patient.setGenderId(order.getGenderId());
-            patientService.updatePatient(patient);
-            orderRepository.updateOrder(order.toEntity());
-            rabbitSender.sendMessage(order.getOrderStatusId() + RABBIT_UPDATE_COMMAND);
+            if (orderDTO != null){
+                Patient patient = patientService.getPatientById(orderDTO.getPatientId());
+                patient.setPhone(order.getPhone());
+                patient.setEmail(order.getEmail());
+                patient.setAddress(order.getAddress());
+                patient.setGenderId(order.getGenderId());
+                patientService.updatePatient(patient);
+                Long id = orderRepository.updateOrder(order.toEntity()).getId();
+                //rabbitSender.sendMessage(order.getOrderStatusId() + RABBIT_UPDATE_COMMAND);
+                return id;
+            } else {
+                return null;
+            }
         } catch (RuntimeException ex) {
             log.error(ex.getCause());
             throw new RuntimeException(ex);
@@ -70,9 +81,9 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void deleteOrderById(Long id) {
+    public Long deleteOrderById(Long id) {
         try {
-            orderRepository.deleteOrderById(id);
+            return orderRepository.deleteOrderById(id);
         } catch (RuntimeException ex) {
             log.error(ex.getCause());
             throw new RuntimeException(ex);
