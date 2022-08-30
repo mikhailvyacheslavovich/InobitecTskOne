@@ -9,6 +9,7 @@ import ru.inobitec.order.mappers.OrderMapper;
 import ru.inobitec.order.model.OrderEntity;
 import ru.inobitec.order.model.OrderItemEntity;
 import ru.inobitec.order.repository.OrderRepository;
+
 import java.util.List;
 
 @Repository
@@ -21,71 +22,49 @@ public class OrderRepositoryImpl implements OrderRepository {
     @Override
     @Transactional
     public OrderDTO getOrderById(Long id) {
-        try {
-            OrderEntity order = orderMapper.getOrderById(id);
-            if (order == null) {
-                return null;
-            }
-            return order.toDTO();
-        } catch (RuntimeException ex) {
-            log.error(ex.getCause());
-            throw new RuntimeException(ex);
-        }
+        OrderEntity order = orderMapper.getOrderById(id);
+        if (order == null)
+            return null;
+        return order.toDTO();
     }
 
     @Override
     @Transactional
     public OrderEntity addOrder(OrderEntity order) {
-        try {
-            orderMapper.addOrder(order);
-            order.getOrderItems().forEach(item -> orderMapper.addOrderItem(item, order.getId()));
-            return order;
-        } catch (RuntimeException ex) {
-            log.error(ex.getCause());
-            throw new RuntimeException(ex);
-        }
+        orderMapper.addOrder(order);
+        order.getOrderItems().forEach(item -> orderMapper.addOrderItem(item, order.getId()));
+        return order;
     }
 
     @Override
     @Transactional
     public OrderEntity updateOrder(OrderEntity order) {
-        try {
-            orderMapper.updateOrder(order);
+        orderMapper.updateOrder(order);
 
-            //альтернативный вариант апдейта
-            //orderMapper.deleteOrderItemsById(order.getId());
-            //order.getOrderItems().forEach(item -> orderMapper.addOrderItem(item, order.getId()));
+        //альтернативный вариант апдейта
+        //orderMapper.deleteOrderItemsById(order.getId());
+        //order.getOrderItems().forEach(item -> orderMapper.addOrderItem(item, order.getId()));
 
-            List<Long> itemIds = orderMapper.getAllItemsIdByOrderId(order.getId());
-            List<OrderItemEntity> items = order.getOrderItems();
-            items.forEach(item -> {
-                if (item.getId() == null) {
-                    orderMapper.addOrderItem(item, order.getId());
-                }
-                if (itemIds.contains(item.getId())) {
-                    orderMapper.updateOrderItem(item);
-                    itemIds.remove(item.getId());
-                }
-            });
+        List<Long> itemIds = orderMapper.getAllItemsIdByOrderId(order.getId());
+        List<OrderItemEntity> items = order.getOrderItems();
+        items.forEach(item -> {
+            if (item.getId() == null)
+                orderMapper.addOrderItem(item, order.getId());
+            if (itemIds.contains(item.getId())) {
+                orderMapper.updateOrderItem(item);
+                itemIds.remove(item.getId());
+            }
+        });
 
-            itemIds.forEach(orderMapper::deleteOrderItemById);
+        itemIds.forEach(orderMapper::deleteOrderItemById);
 
-            return order;
-        } catch (RuntimeException ex) {
-            log.error(ex.getCause());
-            throw new RuntimeException(ex);
-        }
+        return order;
     }
 
     @Override
     @Transactional
     public Long deleteOrderById(Long id) {
-        try {
-            orderMapper.deleteOrderItemsById(id);
-            return orderMapper.deleteOrderById(id);
-        } catch (RuntimeException ex) {
-            log.error(ex.getCause());
-            throw new RuntimeException(ex);
-        }
+        orderMapper.deleteOrderItemsById(id);
+        return orderMapper.deleteOrderById(id);
     }
 }

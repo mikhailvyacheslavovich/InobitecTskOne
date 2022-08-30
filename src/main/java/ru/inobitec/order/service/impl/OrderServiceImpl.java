@@ -25,81 +25,50 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderDTO getOrderById(Long id) {
-        try {
-            OrderDTO order = orderRepository.getOrderById(id);
-            if (order == null) {
-                throw new OrderEntityNotFoundException();
-            }
-            Patient patient = patientService.getPatientById(order.getPatientId());
-            order.setPatient(patient);
-            return order;
-        } catch(OrderEntityNotFoundException e){
-            log.error(e.getCause());
+        OrderDTO order = orderRepository.getOrderById(id);
+        if (order == null)
             throw new OrderEntityNotFoundException();
-        } catch (RuntimeException ex) {
-            log.error(ex.getCause());
-            throw new RuntimeException(ex);
-        }
+        Patient patient = patientService.getPatientById(order.getPatientId());
+        order.setPatient(patient);
+        return order;
     }
 
     @Override
     public void addOrder(OrderDTO order) {
-        try {
-            Long patientId;
-            Patient patient = patientService.getPatientByName(order.getFirstName(), order.getLastName(), order.getMidName(), order.getBirthday());
-            if (patient == null) {
-                patientId = patientService.addPatient(order);
-            } else {
-                patientId = patient.getId();
-            }
-            order.setPatientId(patientId);
-            orderRepository.addOrder(order.toEntity());
-            rabbitSender.sendMessage(order.getOrderStatusId() + RABBIT_CREATE_COMMAND);
-        } catch (RuntimeException ex) {
-            log.error(ex.getCause());
-            throw new RuntimeException(ex);
-        }
+
+        Long patientId;
+        Patient patient = patientService.getPatientByName(order.getFirstName(), order.getLastName(), order.getMidName(), order.getBirthday());
+        if (patient == null)
+            patientId = patientService.addPatient(order);
+        else
+            patientId = patient.getId();
+        order.setPatientId(patientId);
+        orderRepository.addOrder(order.toEntity());
+        rabbitSender.sendMessage(order.getOrderStatusId() + RABBIT_CREATE_COMMAND);
     }
 
     @Override
     public Long updateOrder(OrderDTO order) {
-        try {
-            OrderDTO orderDTO = orderRepository.getOrderById(order.getId());
-            if (orderDTO != null){
-                Patient patient = patientService.getPatientById(orderDTO.getPatientId());
-                patient.setPhone(order.getPhone());
-                patient.setEmail(order.getEmail());
-                patient.setAddress(order.getAddress());
-                patient.setGenderId(order.getGenderId());
-                patientService.updatePatient(patient);
-                Long id = orderRepository.updateOrder(order.toEntity()).getId();
-                rabbitSender.sendMessage(order.getOrderStatusId() + RABBIT_UPDATE_COMMAND);
-                return id;
-            } else {
-                throw new OrderEntityNotFoundException();
-            }
-        } catch(OrderEntityNotFoundException e){
-            log.error(e.getCause());
+        OrderDTO orderDTO = orderRepository.getOrderById(order.getId());
+        if (orderDTO != null) {
+            Patient patient = patientService.getPatientById(orderDTO.getPatientId());
+            patient.setPhone(order.getPhone());
+            patient.setEmail(order.getEmail());
+            patient.setAddress(order.getAddress());
+            patient.setGenderId(order.getGenderId());
+            patientService.updatePatient(patient);
+            Long id = orderRepository.updateOrder(order.toEntity()).getId();
+            rabbitSender.sendMessage(order.getOrderStatusId() + RABBIT_UPDATE_COMMAND);
+            return id;
+        } else {
             throw new OrderEntityNotFoundException();
-        } catch (RuntimeException ex) {
-            log.error(ex.getCause());
-            throw new RuntimeException(ex);
         }
     }
 
     @Override
     public void deleteOrderById(Long id) {
-        try {
-            Long quantity = orderRepository.deleteOrderById(id);
-            if (quantity == 0){
-                throw new OrderEntityNotFoundException();
-            }
-        } catch(OrderEntityNotFoundException e){
-            log.error(e.getCause());
+        Long quantity = orderRepository.deleteOrderById(id);
+        if (quantity == 0)
             throw new OrderEntityNotFoundException();
-        } catch (RuntimeException ex) {
-            log.error(ex.getCause());
-            throw new RuntimeException(ex);
-        }
     }
 }
