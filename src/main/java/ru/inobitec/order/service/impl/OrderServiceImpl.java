@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import ru.inobitec.order.dto.OrderDTO;
 import ru.inobitec.order.dto.Patient;
+import ru.inobitec.order.exceptions.OrderEntityNotFoundException;
 import ru.inobitec.order.rabbit.RabbitSender;
 import ru.inobitec.order.repository.OrderRepository;
 import ru.inobitec.order.service.PatientService;
@@ -26,12 +27,15 @@ public class OrderServiceImpl implements OrderService {
     public OrderDTO getOrderById(Long id) {
         try {
             OrderDTO order = orderRepository.getOrderById(id);
-            if (order == null){
-                return null;
+            if (order == null) {
+                throw new OrderEntityNotFoundException();
             }
             Patient patient = patientService.getPatientById(order.getPatientId());
             order.setPatient(patient);
             return order;
+        } catch(OrderEntityNotFoundException e){
+            log.error(e.getCause());
+            throw new OrderEntityNotFoundException();
         } catch (RuntimeException ex) {
             log.error(ex.getCause());
             throw new RuntimeException(ex);
@@ -72,8 +76,11 @@ public class OrderServiceImpl implements OrderService {
                 rabbitSender.sendMessage(order.getOrderStatusId() + RABBIT_UPDATE_COMMAND);
                 return id;
             } else {
-                return null;
+                throw new OrderEntityNotFoundException();
             }
+        } catch(OrderEntityNotFoundException e){
+            log.error(e.getCause());
+            throw new OrderEntityNotFoundException();
         } catch (RuntimeException ex) {
             log.error(ex.getCause());
             throw new RuntimeException(ex);
@@ -81,9 +88,15 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Long deleteOrderById(Long id) {
+    public void deleteOrderById(Long id) {
         try {
-            return orderRepository.deleteOrderById(id);
+            Long quantity = orderRepository.deleteOrderById(id);
+            if (quantity == 0){
+                throw new OrderEntityNotFoundException();
+            }
+        } catch(OrderEntityNotFoundException e){
+            log.error(e.getCause());
+            throw new OrderEntityNotFoundException();
         } catch (RuntimeException ex) {
             log.error(ex.getCause());
             throw new RuntimeException(ex);

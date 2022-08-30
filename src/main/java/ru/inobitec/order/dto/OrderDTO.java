@@ -1,13 +1,11 @@
 package ru.inobitec.order.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.xml.bind.annotation.*;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 import ru.inobitec.order.model.OrderEntity;
-import ru.inobitec.order.model.OrderItemEntity;
 
 import java.util.Date;
 import java.util.List;

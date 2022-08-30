@@ -103,7 +103,7 @@ public class PatientService {
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<Patient> requestBody = new HttpEntity<>(patient, headers);
         try {
-            restTemplate.put(URL + PATIENT, requestBody);
+            restTemplate.put(URL + PATIENT + patient.getId(), requestBody);
         } catch (Exception ex) {
             log.error(ex.getCause());
         }

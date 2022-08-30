@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.inobitec.order.dto.OrderDTO;
 
+import ru.inobitec.order.exceptions.OrderEntityNotFoundException;
 import ru.inobitec.order.service.OrderService;
 
 @RestController
@@ -17,14 +18,13 @@ import ru.inobitec.order.service.OrderService;
 public class OrderController {
     private static final String ORDER_READ_NEGATIVE = "Unable to get order by id ";
     private static final String ORDER_CREATED_POSITIVE = "Order was created successfully ";
-    private static final String ORDER_CREATED_NEGATIVE = "Unable to update order ";
+    private static final String ORDER_CREATED_NEGATIVE = "Unable to create order ";
     private static final String ORDER_UPDATED_POSITIVE = "Order has been updated successfully ";
     private static final String ORDER_UPDATED_NEGATIVE = "Unable to update order by id ";
     private static final String ORDER_DELETED_POSITIVE = "Order deleted successfully ";
     private static final String ORDER_DELETED_NEGATIVE = "Unable to delete order by id ";
     private static final String NOT_EXIST_ORDER = "Can not find order with id = ";
     private static final String NOT_EXIST_ORDER_FOR_UPDATE = "Can not find order for update with id = ";
-
     private static final String NOT_EXIST_ORDER_FOR_DELETE = "Can not find order with id = ";
 
     private final OrderService orderService;
@@ -35,10 +35,10 @@ public class OrderController {
     public ResponseEntity<OrderDTO> getOrderById(@PathVariable("id") Long id) {
         try {
             OrderDTO orderDTO = orderService.getOrderById(id);
-            if (orderDTO == null) {
-                return new ResponseEntity(NOT_EXIST_ORDER + id, HttpStatus.NOT_FOUND);
-            }
             return new ResponseEntity<>(orderDTO, HttpStatus.OK);
+        } catch (OrderEntityNotFoundException oEx) {
+            log.error(oEx.getCause());
+            return new ResponseEntity(NOT_EXIST_ORDER + id, HttpStatus.NOT_FOUND);
         } catch (RuntimeException ex) {
             log.error(ex.getCause());
             return new ResponseEntity(ORDER_READ_NEGATIVE + id + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -63,11 +63,11 @@ public class OrderController {
     @PutMapping("/order/{id}")
     public ResponseEntity<String> updateOrder(@RequestBody OrderDTO order, @PathVariable("id") Long id) {
         try {
-            Long returnedId = orderService.updateOrder(order);
-            if (returnedId == null) {
-                return new ResponseEntity<>(NOT_EXIST_ORDER_FOR_UPDATE + order.getId(), HttpStatus.NOT_FOUND);
-            }
+            orderService.updateOrder(order);
             return new ResponseEntity<>(ORDER_UPDATED_POSITIVE, HttpStatus.OK);
+        } catch (OrderEntityNotFoundException oEx) {
+            log.error(oEx.getCause());
+            return new ResponseEntity<>(NOT_EXIST_ORDER_FOR_UPDATE + order.getId(), HttpStatus.NOT_FOUND);
         } catch (RuntimeException ex) {
             log.error(ex.getCause());
             return new ResponseEntity<>(ORDER_UPDATED_NEGATIVE + order.getId() + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -79,11 +79,11 @@ public class OrderController {
     @DeleteMapping("/order/{id}")
     public ResponseEntity<String> deleteOrderById(@PathVariable("id") Long id) {
         try {
-            Long oId = orderService.deleteOrderById(id);
-            if (oId == 0) {
-                return new ResponseEntity<>(NOT_EXIST_ORDER_FOR_DELETE + id, HttpStatus.NOT_FOUND);
-            }
+            orderService.deleteOrderById(id);
             return new ResponseEntity<>(ORDER_DELETED_POSITIVE, HttpStatus.OK);
+        } catch (OrderEntityNotFoundException oEx) {
+            log.error(oEx.getCause());
+            return new ResponseEntity<>(NOT_EXIST_ORDER_FOR_DELETE + id, HttpStatus.NOT_FOUND);
         } catch (RuntimeException ex) {
             log.error(ex.getCause());
             return new ResponseEntity<>(ORDER_DELETED_NEGATIVE + id + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
